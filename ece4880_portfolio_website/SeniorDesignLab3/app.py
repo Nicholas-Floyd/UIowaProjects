@@ -150,7 +150,7 @@ def send_sms_via_email(phone_number, message):
     smtp_server = 'smtp.gmail.com'
     smtp_port = 587
     sender_email = 'team8esp32devkitv@gmail.com'
-    sender_password = 'lrfqscjgpmkwlnos'
+    sender_password = 'expsswrd'
 
     msg = MIMEText(message)
     msg['From'] = sender_email
