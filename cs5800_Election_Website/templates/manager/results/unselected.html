@@ -1,0 +1,14 @@
+{% extends '/manager/results/sidebar.html' %}
+
+{% block main_content %}
+<div class="container my-5 ms-2">
+  <h1>Elections</h1>
+  {% if elections|length == 0 %}
+  <p>No active elections</p>
+  {% else %}
+  <p>Please select an election</p>
+  {% endif %}
+  {{ render_flashes(get_flashed_messages(with_categories=True)) }}
+</div>
+
+{% endblock %}

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Lab Results</title>
+</head>
+<body>
+    <h1>My Lab Results</h1>
+
+    {% if results %}
+        <table border="1" cellpadding="5" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>Test Name</th>
+                    <th>Date</th>
+                    <th>Value</th>
+                    <th>Units</th>
+                    <th>Interpretation</th>
+                    <th>Status</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for r in results %}
+                <tr>
+                    <td>{{ r.TestName }}</td>
+                    <td>{{ r.ResultDate }}</td>
+                    <td>{{ r.ResultValue }}</td>
+                    <td>{{ r.Units }}</td>
+                    <td>{{ r.ResultInterpretation }}</td>
+                    <td>{{ r.LabStatus }}</td>
+                    <td><a href="{{ url_for('lab_result_details', lab_id=r.LabID) }}">View</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No lab results found.</p>
+    {% endif %}
+
+    <a href="{{ url_for('home') }}">Back to Home</a>
+</body>
+</html>

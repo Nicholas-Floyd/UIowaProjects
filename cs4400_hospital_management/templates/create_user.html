@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create New User</title>
+</head>
+<body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+            {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <h1>Create New User</h1>
+    <form method="POST">
+        Username: <input type="text" name="username" required><br>
+        First Name: <input type="text" name="first_name" required><br>
+        Last Name: <input type="text" name="last_name" required><br>
+        Email: <input type="email" name="email" required><br>
+        Password: <input type="password" name="password" required><br>
+        Phone: <input type="text" name="phone"><br>
+        Gender: 
+        <select name="gender">
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Non-Binary">Non-Binary</option>
+            <option value="Other">Other</option>
+        </select><br><br>
+
+        <!-- Sex dropdown -->
+        Sex: 
+        <select name="sex" required>
+            <option value="">--Select Sex--</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+        </select><br>
+
+        DOB: <input type="date" name="dob"><br>
+
+        <!-- Role dropdown -->
+        Role: 
+        <select name="roleID" required>
+            <option value="">--Select Role--</option>
+            <option value="R1">Patient</option>
+            <option value="R2">Physician</option>
+            <option value="R3">Nurse</option>
+            <option value="R4">Admin</option>
+        </select><br>
+
+        <button type="submit">Create User</button>
+    </form>
+
+    <a href="{{ url_for('admin_dashboard') }}">Back to Dashboard</a>
+</body>
+</html>

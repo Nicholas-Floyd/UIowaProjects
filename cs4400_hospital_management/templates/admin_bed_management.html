@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Bed Management</title>
+</head>
+<body>
+    <h1>Admin Bed Management</h1>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+            {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <h2>Create New Bed</h2>
+    <form method="POST">
+        <input type="hidden" name="action" value="create">
+        <label>Bed ID:</label>
+        <input type="text" name="bedID" required><br><br>
+
+        <label>Bed Type:</label>
+        <select name="bedType" required>
+            <option value="">-- Select Bed Type --</option>
+            {% for bt in ['General', 'ICU', 'CCU', 'Pediatric', 'Maternity', 'Surgical',
+                          'Trauma', 'Birthing', 'Psychiatric', 'Geriatric', 'Transport',
+                          'Step-Down', 'Rehabilitation', 'Isolation', 'Burn Unit'] %}
+                <option value="{{ bt }}">{{ bt }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <label>Department:</label>
+        <select name="deptID" required>
+            <option value="">-- Select Department --</option>
+            {% for dept in departments %}
+                <option value="{{ dept.DeptID }}">{{ dept.DeptName }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <button type="submit">Create Bed</button>
+    </form>
+
+    <h2>Existing Beds</h2>
+    <table border="1" cellpadding="5">
+        <thead>
+            <tr>
+                <th>Bed ID</th>
+                <th>Bed Type</th>
+                <th>Department</th>
+                <th>Assigned Patient</th>
+                <th>Modify</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for bed in beds %}
+            <tr>
+                <td>{{ bed.BedID }}</td>
+                <td>{{ bed.BedType }}</td>
+                <td>{{ bed.DeptName }}</td>
+                <td>{{ bed.PatientID or 'Unassigned' }}</td>
+                <td>
+                    <form method="POST" style="display:inline;">
+                        <input type="hidden" name="action" value="modify">
+                        <input type="hidden" name="bedID" value="{{ bed.BedID }}">
+
+                        <select name="bedType" required>
+                            {% for bt in ['General', 'ICU', 'CCU', 'Pediatric', 'Maternity', 'Surgical',
+                                          'Trauma', 'Birthing', 'Psychiatric', 'Geriatric', 'Transport',
+                                          'Step-Down', 'Rehabilitation', 'Isolation', 'Burn Unit'] %}
+                                <option value="{{ bt }}" {% if bed.BedType == bt %}selected{% endif %}>{{ bt }}</option>
+                            {% endfor %}
+                        </select>
+
+                        <select name="deptID" required>
+                            {% for dept in departments %}
+                                <option value="{{ dept.DeptID }}" {% if bed.DeptID == dept.DeptID %}selected{% endif %}>
+                                    {{ dept.DeptName }}
+                                </option>
+                            {% endfor %}
+                        </select>
+
+                        <button type="submit">Save</button>
+                    </form>
+                </td>
+                <td>
+                    <form method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this bed?');">
+                        <input type="hidden" name="action" value="delete">
+                        <input type="hidden" name="bedID" value="{{ bed.BedID }}">
+                        <button type="submit" name="submit" value="delete">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <br>
+    <a href="{{ url_for('admin_dashboard') }}">Back to Admin Dashboard</a>
+</body>
+</html>

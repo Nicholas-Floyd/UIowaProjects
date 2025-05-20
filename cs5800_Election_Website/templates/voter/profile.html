@@ -1,0 +1,69 @@
+{% extends "voter/base.html" %}
+{% set active_page = "profile" %}
+
+{% block content %}
+<div class="container mt-5" id="profile_container">
+  <h1>Voter Profile</h1>
+  <form class="mb-3" id="voter-profile-form" method="post" action="{{ url_for('voter.profile') }}">
+    <!-- Include CSRF token if needed -->
+    <div class="form-group mb-3">
+      <label for="voter-name">Name</label>
+      <input type="text" class="form-control" id="voter-name" name="name" value="{{ voter.name }}" readonly>
+    </div>
+    <div class="form-group mb-3">
+      <label for="voter-email">Email</label>
+      <input type="email" class="form-control" id="voter-email" name="email" value="{{ voter.email }}" readonly>
+    </div>
+    <div class="form-group mb-3">
+      <label for="voter-age">Age</label>
+      <input type="number" class="form-control" id="voter-age" name="age" value="{{ voter.age }}" readonly>
+    </div>
+    <div class="form-group mb-3">
+      <label for="voter-address">Address</label>
+      <input type="text" class="form-control" id="voter-address" name="address" value="{{ voter.address }}" readonly>
+    </div>
+    <div class="form-group mb-3">
+      <label for="voter-zip-code">Zip Code</label>
+      <input type="text" class="form-control" id="voter-zip-code" name="zip_code" value="{{ voter.zip_code }}" readonly>
+    </div>
+  
+    <button type="button" class="btn btn-primary" id="edit-button">Edit Profile</button>
+    <button type="submit" class="btn btn-success d-none" id="save-button">Save Changes</button>
+    <button type="button" class="btn btn-secondary d-none" id="cancel-button">Cancel</button>
+  </form>
+  {{ render_flashes(get_flashed_messages(with_categories=True)) }}
+</div>
+
+<script>
+  // JavaScript to toggle between view and edit modes
+  document.addEventListener('DOMContentLoaded', function () {
+    var editButton = document.getElementById('edit-button');
+    var saveButton = document.getElementById('save-button');
+    var cancelButton = document.getElementById('cancel-button');
+    var formFields = document.querySelectorAll('#voter-profile-form input');
+
+    editButton.addEventListener('click', function () {
+      // Make input fields editable
+      formFields.forEach(function (field) {
+        field.removeAttribute('readonly');
+      });
+      // Toggle visibility of buttons
+      editButton.classList.add('d-none');
+      saveButton.classList.remove('d-none');
+      cancelButton.classList.remove('d-none');
+    });
+
+    cancelButton.addEventListener('click', function () {
+      // Reload the page to discard changes
+      location.reload();
+    });
+  });
+</script>
+<style>
+  @media (min-width: 1200px) {
+    #profile_container {
+      max-width: 800px;
+    }
+  }
+</style>
+{% endblock %}

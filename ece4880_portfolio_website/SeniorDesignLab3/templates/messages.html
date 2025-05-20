@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='content/global.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='content/style.css') }}">
+    <title>Message Log</title>
+</head>
+<body>
+    <div style="width: 100%; height: 100%; position: relative; background: white;">
+        <!-- Header Section -->
+        <div style="width: 1440px; height: 140px; position: absolute; background: #FFCD00;">
+            <h1 style="position: absolute; left: 300px; top: 50px; color: black; font-size: 64px; font-family: 'Zilla Slab'; font-weight: 700;">
+                Message Log
+            </h1>
+        </div>
+
+        <!-- Sidebar for Team Members -->
+        <div style="width: 270px; height: auto; background: #F0F0F0; position: absolute; top: 140px; left: 0;">
+            <h2 style="margin-left: 20px; font-family: 'Zilla Slab'; font-size: 32px; font-weight: 500; text-decoration: underline;">
+                Team Members
+            </h2>
+            <ul style="list-style: none; padding: 0; margin: 0 0 20px 20px;">
+                <li><a href="{{ url_for('team_member', name='nick') }}" style="font-family: 'Zilla Slab'; font-size: 24px; text-decoration: underline;">Nick Floyd</a></li>
+                <li><a href="{{ url_for('team_member', name='robby') }}" style="font-family: 'Zilla Slab'; font-size: 24px; text-decoration: underline;">Robby Modica</a></li>
+                <li><a href="{{ url_for('team_member', name='alex') }}" style="font-family: 'Zilla Slab'; font-size: 24px; text-decoration: underline;">Alex Viner</a></li>
+                <li><a href="{{ url_for('team_member', name='michael') }}" style="font-family: 'Zilla Slab'; font-size: 24px; text-decoration: underline;">Michael West</a></li>
+            </ul>
+        </div>
+
+        <!-- Message List Section -->
+        <div style="margin-left: 300px; top: 180px; position: absolute; width: calc(100% - 300px); padding: 20px;">
+            <h2 style="font-family: 'Zilla Slab'; font-size: 48px; font-weight: 700;">Stored Messages</h2>
+            {% if messages %}
+            <ul style="list-style: none; padding: 0;">
+                {% for message in messages %}
+                <li style="margin-bottom: 20px;">
+                    <h3 style="font-family: 'Zilla Slab'; font-size: 24px; margin: 0;">Message to <strong>{{ message.name }}</strong></h3>
+                    <a href="{{ url_for('view_message', filename=message.filename) }}" style="font-family: 'Zilla Slab'; font-size: 24px; color: #0d5d92; text-decoration: underline;">View Message</a>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p style="font-family: 'Zilla Slab'; font-size: 24px;">No messages found.</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

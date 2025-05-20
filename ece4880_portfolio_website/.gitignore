@@ -1,0 +1,14 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/SeniorDesignLab3/.vs/SeniorDesignLab3
+/SeniorDesignLab3/venv
+/SeniorDesignLab3/env
+/SeniorDesignLab3/inspect_db.py
+/venv
+/protected
+/instance
+.env
+/env

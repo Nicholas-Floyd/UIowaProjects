@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Signup</title>
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='currentColor'><path d='M6.375 7.125V4.658h1.78c.973 0 1.542.457 1.542 1.237 0 .802-.604 1.23-1.764 1.23zm0 3.762h1.898c1.184 0 1.81-.48 1.81-1.377 0-.885-.65-1.348-1.886-1.348H6.375z'/><path d='M4.002 0a4 4 0 0 0-4 4v8a4 4 0 0 0 4 4h8a4 4 0 0 0 4-4V4a4 4 0 0 0-4-4zm1.06 12V3.545h3.399c1.587 0 2.543.809 2.543 2.11 0 .884-.65 1.675-1.483 1.816v.1c1.143.117 1.904.931 1.904 2.033 0 1.488-1.084 2.396-2.888 2.396z'/></svg>">
+</head>
+
+<body>
+  <h1>Manager Registration</h1>
+  <form method="post">
+    <label>Name:</label>
+    <input type="text" name="name" required>
+
+    <label>Email:</label>
+    <input type="email" name="email" required>
+
+    <label>Password:</label>
+    <div class="password-container">
+      <input type="password" id="password" name="password" minlength="8" maxlength="24"
+        pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,24}" required
+        title="Password must be 8-24 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character.">
+      <button type="button" onclick=togglePassword()>Show</button>
+    </div>
+
+    <input type="submit" value="Signup">
+  </form>
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+  <div class="message error">
+    {% for message in messages %}
+    <p>{{ message }}</p>
+    {% endfor %}
+  </div>
+  {% endif %}
+  {% endwith %}
+  <script>
+    function togglePassword() {
+      var passwordField = document.getElementById("password");
+      var button = event.target;
+
+      if (passwordField.type === "password") {
+        passwordField.type = "text";
+        button.textContent = "Hide";
+      } else {
+        passwordField.type = "password";
+        button.textContent = "Show";
+      }
+    }
+  </script>
+  <style>
+    /* styles.css */
+
+    /* General Styles */
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    form {
+      background-color: #fff;
+      max-width: 50em;
+      margin: 20px auto;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px #ccc;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #555;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="number"],
+    select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    input[type="submit"] {
+      background-color: #4285F4;
+      color: #fff;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #357AE8;
+    }
+
+    #password {
+      margin: 0;
+    }
+
+    .password-container {
+      margin-bottom: 20px;
+      display: flex;
+    }
+
+    /* .password-container input[type="password"] {
+  width: 100%;
+  padding-right: 60px;
+} */
+
+    .password-container button {
+      width: 4em;
+      border: 1px solid #ccc;
+      background-color: #fff;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .password-container button:hover {
+      background-color: #f2f2f2;
+    }
+
+    p {
+      text-align: center;
+    }
+
+    a {
+      color: #4285F4;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .message {
+      max-width: 500px;
+      margin: 10px auto;
+      padding: 10px;
+      text-align: center;
+      border-radius: 5px;
+    }
+
+    .message.success {
+      background-color: #DFF2BF;
+      color: #4F8A10;
+    }
+
+    .message.error {
+      background-color: #FFBABA;
+      color: #D8000C;
+    }
+
+    .message.info {
+      background-color: #BDE5F8;
+      color: #00529B;
+    }
+
+    .profile-container {
+      max-width: 600px;
+      margin: 20px auto;
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px #ccc;
+    }
+
+    .profile-container p {
+      font-size: 16px;
+      color: #333;
+    }
+
+    .profile-container a {
+      display: inline-block;
+      margin-top: 20px;
+    }
+  </style>
+</body>
+
+</html>

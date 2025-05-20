@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Manage Departments</title>
+    <!-- Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+    <!-- jQuery and Select2 JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+</head>
+<body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+            {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+<h1>Manage Departments</h1>
+
+<h2>Add Department</h2>
+<form method="POST">
+    <input type="hidden" name="action" value="add">
+    
+    <label>Department Name:</label>
+    <input type="text" name="deptName" required><br><br>
+
+    <label>Select Clinic(s):</label><br>
+    <select name="clinicIDs" id="clinic-select" multiple="multiple" style="width: 300px;">
+        {% for clinic in clinics %}
+            <option value="{{ clinic.ClinicID }}">{{ clinic.ClinicName }}</option>
+        {% endfor %}
+    </select><br><br>
+
+    <button type="submit">Add Department</button>
+</form>
+
+<h2>Existing Departments</h2>
+<table border="1">
+    <tr>
+        <th>Department</th>
+        <th>Clinics</th>
+        <th>Action</th>
+    </tr>
+    {% for dept in departments %}
+    <tr>
+        <td>{{ dept.DeptName }}</td>
+        <td>{{ dept.ClinicNames }}</td>
+        <td>
+            <form method="POST">
+                <input type="hidden" name="action" value="edit">
+                <input type="hidden" name="DeptID" value="{{ dept.DeptID }}">
+                <input type="text" name="new_deptName" placeholder="Rename department" required>
+                <button type="submit">Edit</button>
+            </form>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+<a href="{{ url_for('admin_dashboard') }}">Back to Dashboard</a>
+
+<script>
+    $(document).ready(function() {
+        $('#clinic-select').select2({
+            placeholder: "Select one or more clinics",
+            allowClear: true
+        });
+    });
+</script>
+    
+</body>
+</html>

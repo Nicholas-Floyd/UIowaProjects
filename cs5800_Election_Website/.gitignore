@@ -1,0 +1,12 @@
+venv
+__pycache__
+.pytest_cache
+secrets.json
+.coverage
+coverage.xml
+.DS_Store
+/.vs/repo/FileContentIndex
+/.vs/repo/v17
+/.vs
+
+.vscode

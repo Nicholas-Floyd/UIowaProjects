@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <h2>Plan</h2>
+  <form method="POST">
+      Notes: <textarea name="notes" required></textarea><br>
+      Follow-Up Required:
+      <label><input type="radio" name="followup" value="yes" checked> Yes</label>
+      <label><input type="radio" name="followup" value="no"> No</label><br>
+      Status:
+      <select name="status">
+          <option value="Active">Active</option>
+          <option value="Completed">Completed</option>
+      </select><br>
+      <button type="submit">Complete SOAP Note</button>
+  </form>

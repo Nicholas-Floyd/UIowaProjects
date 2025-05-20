@@ -1,0 +1,1 @@
+Folder if for css, images, and styling

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Reschedule Appointment</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+            {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+
+    <h1>Reschedule Appointment</h1>
+
+    <!-- Current Appointment Details -->
+    <h2>Current Appointment Details</h2>
+    <table border="1" cellpadding="5" cellspacing="0">
+        <thead>
+            <tr>
+                <th>Appointment Date</th>
+                <th>Physician</th>
+                <th>Department</th>
+                <th>Type</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ appt.ApptDate }}</td>
+                <td>{{ appt.PhysicianName }}</td>
+                <td>{{ appt.DeptName }}</td>
+                <td>{{ appt.TypeName }}</td>
+                <td>{{ appt.ApptStatus }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <hr>
+
+    <!-- Reschedule Form -->
+    <h2>Select New Time Slot</h2>
+    <form method="POST">
+        <fieldset>
+            <legend>New Slot Selection</legend>
+
+            <label>Department:</label>
+            <select id="dept-select" name="DeptID" required>
+                <option value="">-- Select Department --</option>
+                {% for d in departments %}
+                    <option value="{{ d.DeptID }}" {% if d.DeptID == selected_DeptID %}selected{% endif %}>
+                        {{ d.DeptName }}
+                    </option>
+                {% endfor %}
+            </select>
+
+            <br><br>
+
+            <label>Time Slot:</label>
+            <select name="slotID" id="slotID" required>
+                <option value="">-- Select New Slot --</option>
+                <!-- JS will populate -->
+            </select>
+
+            <input type="hidden" name="physicianID" id="physicianID_hidden">
+
+            <br><br>
+            <button type="submit">Confirm Reschedule</button>
+        </fieldset>
+    </form>
+
+    {% if session.role == 'Patient' %}
+        <a href="{{ url_for('appointments') }}">Back to Appointments</a>
+    {% elif session.role == 'Physician' %}
+        <a href="{{ url_for('physician_appointments') }}">Back to Physician Appointments</a>
+    {% else %}
+        <a href="{{ url_for('admin_view_appointments') }}">Back to All Appointments</a>
+    {% endif %}
+
+    <script>
+        function loadSlots(deptId) {
+            $('#slotID').empty().append('<option>Loading...</option>');
+            $.getJSON('/api/get_slots_by_department/' + deptId, function (data) {
+                $('#slotID').empty().append('<option value="">-- Select New Slot --</option>');
+                data.forEach(slot => {
+                    const label = `${slot.StartTime} - ${slot.EndTime} (Dr. ${slot.FirstName} ${slot.LastName})`;
+                    $('#slotID').append(`<option value="${slot.SlotID}" data-physician="${slot.PhysicianID}">${label}</option>`);
+                });
+            });
+        }
+
+        $(document).ready(function () {
+            const deptId = $('#dept-select').val();
+            if (deptId) {
+                loadSlots(deptId);  // load on page load if preselected
+            }
+
+            $('#dept-select').on('change', function () {
+                const selected = $(this).val();
+                loadSlots(selected);
+            });
+
+            $('#slotID').on('change', function () {
+                const physicianId = this.options[this.selectedIndex].getAttribute('data-physician');
+                $('#physicianID_hidden').val(physicianId);
+            });
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,45 @@
+{% extends "manager/base.html" %}
+{% set active_page = "manage" %}
+{% set active_sidebar = active_sidebar|default('') -%}
+
+{% block content %}
+<div class="d-flex flex-column flex-shrink-0 p-3 bg-light border-end" id="sidebar" style="width: 280px">
+  <a href="{{ url_for('manager.elections') }}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-decoration-none">
+    <span class="fs-4 link-dark">Manage Elections</span>
+  </a>
+  <hr>
+  <ul class="nav nav-pills flex-column mb-auto">
+    <li class="nav-item">
+      <a href="{{ url_for('manager.elections') }}"
+        class="nav-link link-dark {{ 'active' if active_sidebar == 'elections' else '' }}" aria-current="page">
+        Manage Elections
+      </a>
+    </li>
+    <li>
+      <a href="{{ url_for('manager.search') }}"
+        class="nav-link link-dark {{ 'active' if active_sidebar == 'search' else '' }}">
+        Voter Search
+      </a>
+    </li>
+    <li>
+      <a href="{{ url_for('manager.approve') }}"
+        class="nav-link link-dark {{ 'active' if active_sidebar == 'approve' else '' }}">
+        Approve Voters
+      </a>
+    </li>
+  </ul>
+</div>
+<button id="toggleSidebar" style="width: 10px; border: none; padding: 0; color:grey;"
+  onclick=toggleSidebar()>||</button>
+
+<script>
+  function toggleSidebar() {
+    var sidebar = document.getElementById('sidebar');
+    sidebar.classList.toggle('d-none');
+  }
+</script>
+
+<!-- main content -->
+{% block main_content %}{% endblock %}
+
+{% endblock %}

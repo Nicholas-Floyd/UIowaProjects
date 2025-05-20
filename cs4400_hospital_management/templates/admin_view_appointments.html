@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All Appointments - Admin</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+            {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <h1>All Appointments</h1>
+
+    <h2>Schedule New Appointment</h2>
+    <form method="POST" action="{{ url_for('admin_schedule_appointment') }}" id="schedule-form">
+        <label>Department:</label>
+        <select id="dept-select" name="DeptID" required>
+            <option value="">-- Select Department --</option>
+            {% for d in departments %}
+                <option value="{{ d.DeptID }}">{{ d.DeptName }}</option>
+            {% endfor %}
+        </select>
+
+        <br><br>
+
+        <label>Time Slot:</label>
+        <select id="slot-select" name="slotID" required>
+            <option value="">-- Select a time slot --</option>
+        </select>
+
+        <br><br>
+
+        <input type="hidden" name="physicianID" id="physicianID_hidden">
+
+        <label>Appointment Type:</label>
+        <select name="typeID" required>
+            <option value="">-- Select Appointment Type --</option>
+            {% for t in types %}
+                <option value="{{ t.TypeID }}">{{ t.TypeName }}</option>
+            {% endfor %}
+        </select>
+
+        <br><br>
+
+        <label>Patient:</label>
+        <select name="userID" required>
+            <option value="" disabled selected>-- Select a Patient --</option>
+            {% for p in patients %}
+                <option value="{{ p.UserID }}">{{ p.FirstName }} {{ p.LastName }} ({{ p.Username }})</option>
+            {% endfor %}
+        </select>
+
+        <br><br>
+        <button type="submit">Schedule</button>
+    </form>
+
+    <hr>
+
+    <!-- Appointments Table -->
+    <table border="1" cellpadding="5" cellspacing="0">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Patient</th>
+                <th>Physician</th>
+                <th>Department</th>
+                <th>Type</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for a in appointments %}
+                <tr>
+                    <td>{{ a.ApptDate }}</td>
+                    <td>{{ a.PatientName }}</td>
+                    <td>{{ a.PhysicianName }}</td>
+                    <td>{{ a.DeptName }}</td>
+                    <td>{{ a.TypeName }}</td>
+                    <td>{{ a.ApptStatus }}</td>
+                    <td>
+                        {% if a.ApptStatus in ['Scheduled', 'Rescheduled'] %}
+                            <form method="POST" action="{{ url_for('cancel_appointment', apptID=a.ApptID) }}" style="display:inline;">
+                                <button type="submit" onclick="return confirm('Cancel this appointment?')">Cancel</button>
+                            </form>
+                            <form method="GET" action="{{ url_for('reschedule_appointment', apptID=a.ApptID) }}" style="display:inline;">
+                                <button type="submit">Reschedule</button>
+                            </form>
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr><td colspan="7">No appointments found.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <br>
+    <a href="{{ url_for('admin_dashboard') }}">Back to Dashboard</a>
+
+    <script>
+        $(document).ready(function () {
+            $('#dept-select').on('change', function () {
+                const deptId = $(this).val();
+                $('#slot-select').empty().append('<option>Loading...</option>');
+                $('#physicianID_hidden').val('');
+
+                if (deptId) {
+                    $.getJSON('/api/get_slots_by_department/' + deptId, function (data) {
+                        $('#slot-select').empty().append('<option value="">-- Select a time slot --</option>');
+                        data.forEach(slot => {
+                            const label = `${slot.StartTime} - ${slot.EndTime} (Dr. ${slot.FirstName} ${slot.LastName})`;
+                            const opt = $('<option>')
+                                .val(slot.SlotID)
+                                .text(label)
+                                .attr('data-physician-id', slot.PhysicianID);
+                            $('#slot-select').append(opt);
+                        });
+                    });
+                } else {
+                    $('#slot-select').empty().append('<option value="">-- Select a time slot --</option>');
+                }
+            });
+
+            $('#slot-select').on('change', function () {
+                const selected = this.options[this.selectedIndex];
+                const physicianId = selected.getAttribute('data-physician-id');
+                $('#physicianID_hidden').val(physicianId);
+            });
+
+            $('#schedule-form').on('submit', function (e) {
+                const slot = $('#slot-select option:selected');
+                const physicianId = slot.attr('data-physician-id');
+                console.log("Physician ID on submit:", physicianId);
+                $('#physicianID_hidden').val(physicianId);
+            });
+        });
+    </script>
+</body>
+</html>

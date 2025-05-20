@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Group 8</title>
+    <style>
+        /* Global styles to eliminate horizontal scrolling */
+        body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden; /* Prevent horizontal scrolling */
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+    <div style="width: 100%; height: 100%; position: relative; background: white;">
+        <!-- Header -->
+        <div style="width: 100%; height: 140px; position: absolute; background: #FFCD00;"></div>
+
+        <!-- Title Section -->
+        <div style="left: 300px; top: 165px; position: absolute; color: black; font-size: 64px; font-family: 'Zilla Slab'; font-weight: 700; word-wrap: break-word;">
+            Hello There 
+        </div>
+        <div style="left: 34px; top: 0px; position: absolute; color: black; font-size: 96px; font-family: Antonio; font-weight: 700; text-decoration: underline; word-wrap: break-word;">
+            IOWA
+        </div>
+
+        <!-- Image -->
+        <img style="width: 171px; height: 112px; position: absolute; right: 12px; top: 12px;" src="https://via.placeholder.com/171x112" />
+
+        <!-- Sidebar -->
+        <div style="width: 270px; height: 884px; left: 0px; top: 140px; position: absolute; background: #F0F0F0"></div>
+
+        <!-- Team Members Section -->
+        <div style="left: 23px; top: 165px; position: absolute; color: black; font-size: 32px; font-family: Roboto; font-weight: 400; text-decoration: underline; word-wrap: break-word;">
+            Team Members
+        </div>
+
+        <!-- Team Members List -->
+        <div style="left: 34px; top: 228px; position: absolute;">
+            <a href="{{ url_for('team_member', name='alex') }}" style="color: black; font-size: 24px; font-family: Roboto; font-weight: 400; text-decoration: underline;">Alex Viner</a>
+        </div>
+        <div style="left: 34px; top: 292px; position: absolute;">
+            <a href="{{ url_for('team_member', name='michael') }}" style="color: black; font-size: 24px; font-family: Roboto; font-weight: 400; text-decoration: underline;">Michael West</a>
+        </div>
+        <div style="left: 35px; top: 356px; position: absolute;">
+            <a href="{{ url_for('team_member', name='nick') }}" style="color: black; font-size: 24px; font-family: Roboto; font-weight: 400; text-decoration: underline;">Nick Floyd</a>
+        </div>
+        <div style="left: 34px; top: 420px; position: absolute;">
+            <a href="{{ url_for('team_member', name='robby') }}" style="color: black; font-size: 24px; font-family: Roboto; font-weight: 400; text-decoration: underline;">Robby Modica</a>
+        </div>
+
+        <!-- Protected Content Link -->
+        <div style="right: 34px; top: 420px; position: absolute;">
+            <a href="{{ url_for('list_messages') }}" style="color: black; font-size: 24px; font-family: Roboto; font-weight: 400; text-decoration: underline;">Protected Content</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,84 @@
+{% extends '/admin/elections/electionsSidebar.html' %}
+{% set active_sidebar = "candidates" %}
+
+{% block main_content %}
+<div class="container my-5 ms-2">
+  <h1>Candidates</h1>
+  <!-- New candidate button for modal -->
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#candidateModal">
+    New
+  </button>
+  <!-- Table of candidates -->
+  <hr class="mb-0">
+  {% if candidates %}
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Candidate Name</th>
+        <th scope="col">Party Affiliation</th>
+        <th scope="col">Statement</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for candidate in candidates %}
+      <tr>
+        <td>{{ candidate.name }}</td>
+        <td>{{ candidate.party }}</td>
+        <td>{{ candidate.statement }}</td>
+        <td>
+          <a href="#" class="btn btn-sm btn-primary">Edit</a>
+          <a href="#" class="btn btn-sm btn-danger">Delete</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p>No candidates available.</p>
+  {% endif %}
+  {{ render_flashes(get_flashed_messages(with_categories=True)) }}
+</div>
+<!-- Modal for creating a new candidate -->
+<div class="modal fade" id="candidateModal" tabindex="-1" aria-labelledby="candidateModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Begin Form -->
+      <form method="POST" action="{{ url_for('admin.elections.candidates') }}">
+        <div class="modal-header">
+          <h5 class="modal-title" id="candidateModalLabel">Create Candidate</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <!-- Candidate Name Field -->
+          <div class="mb-3">
+            <label for="candidate-name" class="form-label">Candidate Name</label>
+            <input type="text" class="form-control" id="candidate-name" name="name" placeholder="Enter candidate name"
+              required>
+          </div>
+          <!-- Party Affiliation Field -->
+          <div class="mb-3">
+            <label for="party-affiliation" class="form-label">Party Affiliation</label>
+            <input type="text" class="form-control" id="party-affiliation" name="party"
+              placeholder="Enter party affiliation" required>
+          </div>
+          <!-- Candidate Statement Field -->
+          <div class="mb-3">
+            <label for="statement-affiliation" class="form-label">Statement</label>
+            <!-- textarea for statement -->
+            <textarea class="form-control" id="statement" name="statement" rows="3"
+              placeholder="Enter candidate statement" required></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <!-- Submit button to create the candidate -->
+          <button type="submit" class="btn btn-primary">Create</button>
+        </div>
+      </form>
+      <!-- End Form -->
+    </div>
+  </div>
+</div>
+
+{% endblock %}

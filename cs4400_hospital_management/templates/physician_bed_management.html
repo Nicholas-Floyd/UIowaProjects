@@ -1,0 +1,70 @@
+{% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+            {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+<h1>Physician Bed Management</h1>
+
+<h2>Assign Bed to Patient</h2>
+<form method="POST">
+    <label>Patient:</label>
+    <select name="patientID" required>
+        <option value="">--Select Patient--</option>
+        {% for p in patients %}
+            <option value="{{ p.PatientID }}">{{ p.FirstName }} {{ p.LastName }}</option>
+        {% endfor %}
+    </select>
+
+    <label>Available Bed:</label>
+    <select name="bedID" required>
+        <option value="">--Select Bed--</option>
+        {% for b in available_beds %}
+            <option value="{{ b.BedID }}">{{ b.BedID }} ({{ b.BedType }})</option>
+        {% endfor %}
+    </select>
+
+    <input type="hidden" name="action" value="assign">
+    <button type="submit">Assign Bed</button>
+</form>
+
+<hr>
+
+<h2>Currently Assigned Beds</h2>
+<table border="1">
+    <thead>
+        <tr>
+            <th>Bed ID</th>
+            <th>Bed Type</th>
+            <th>Department</th>
+            <th>Patient Name</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for b in assigned_beds %}
+        <tr>
+            <td>{{ b.BedID }}</td>
+            <td>{{ b.BedType }}</td>
+            <td>{{ b.DeptName }}</td>
+            <td>{{ b.FirstName }} {{ b.LastName }}</td>
+            <td>
+                <form method="POST" style="display:inline;">
+                    <input type="hidden" name="action" value="unassign">
+                    <input type="hidden" name="patientID" value="{{ b.PatientID }}">
+                    <button type="submit" onclick="return confirm('Discharge this patient?')">Unassign</button>
+                </form>
+            </td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="5">No assigned beds.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<a href="{{ url_for('physician_dashboard') }}">Back to Dashboard</a>

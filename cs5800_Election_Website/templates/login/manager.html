@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  <title>Login</title>
+</head>
+
+<body>
+  <h1>Manager Login</h1>
+  <form method="post">
+    <label>Email:</label>
+    <input type="email" name="email" required>
+
+    <label>Password:</label>
+    <div class="password-container">
+      <input type="password" id="password" name="password" minlength="8" maxlength="24"
+        pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,24}" required
+        title="Password must be 8-24 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character.">
+      <button type="button" onclick=togglePassword()>Show</button>
+    </div>
+
+    <input type="submit" value="Login">
+  </form>
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+  <div class="message error">
+    {% for message in messages %}
+    <p>{{ message }}</p>
+    {% endfor %}
+  </div>
+  {% endif %}
+  {% endwith %}
+
+  <script>
+    function togglePassword() {
+      var passwordField = document.getElementById("password");
+      var button = event.target;
+
+      if (passwordField.type === "password") {
+        passwordField.type = "text";
+        button.textContent = "Hide";
+      } else {
+        passwordField.type = "password";
+        button.textContent = "Show";
+      }
+    }
+  </script>
+  <style>
+    /* styles.css */
+
+    /* General Styles */
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    form {
+      background-color: #fff;
+      max-width: 50em;
+      margin: 20px auto;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px #ccc;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #555;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="number"],
+    select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    input[type="submit"] {
+      background-color: #4285F4;
+      color: #fff;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #357AE8;
+    }
+
+    #password {
+      margin: 0;
+    }
+
+    .password-container {
+      margin-bottom: 20px;
+      display: flex;
+    }
+
+    /* .password-container input[type="password"] {
+    width: 100%;
+    padding-right: 60px;
+  } */
+
+    .password-container button {
+      width: 4em;
+      border: 1px solid #ccc;
+      background-color: #fff;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .password-container button:hover {
+      background-color: #f2f2f2;
+    }
+
+    p {
+      text-align: center;
+    }
+
+    a {
+      color: #4285F4;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .message {
+      max-width: 500px;
+      margin: 10px auto;
+      padding: 10px;
+      text-align: center;
+      border-radius: 5px;
+    }
+
+    .message.success {
+      background-color: #DFF2BF;
+      color: #4F8A10;
+    }
+
+    .message.error {
+      background-color: #FFBABA;
+      color: #D8000C;
+    }
+
+    .message.info {
+      background-color: #BDE5F8;
+      color: #00529B;
+    }
+
+    .profile-container {
+      max-width: 600px;
+      margin: 20px auto;
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px #ccc;
+    }
+
+    .profile-container p {
+      font-size: 16px;
+      color: #333;
+    }
+
+    .profile-container a {
+      display: inline-block;
+      margin-top: 20px;
+    }
+  </style>
+</body>
+
+</html>

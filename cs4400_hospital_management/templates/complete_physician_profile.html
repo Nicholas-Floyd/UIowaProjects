@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Complete Physician Profile</title>
+</head>
+<body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+            {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <h1>Complete Your Physician Profile</h1>
+
+    <!-- OPTIONAL: Show physician ID if passed (for debug, you can remove later) -->
+    {% if physician_id %}
+        <p><strong>Your Physician ID:</strong> {{ physician_id }}</p>
+    {% endif %}
+
+    <form method="POST">
+        <h3>Select Department(s):</h3>
+        {% for dept in departments %}
+            <input type="checkbox" name="DeptIDs" value="{{ dept.DeptID }}">
+            <label>{{ dept.DeptName }}</label><br>
+        {% endfor %}
+        <br>
+
+        <label for="specializationID">Select Specialization:</label><br>
+        <select name="specializationID" required>
+            <option value="">--Select Specialization--</option>
+            {% for spec in specializations %}
+                <option value="{{ spec.SpecializationID }}">{{ spec.Specialization }}</option>
+            {% endfor %}
+        </select>
+        <br><br>
+
+        <label for="physician_type">Physician Type (e.g., MD, DO, Surgeon):</label><br>
+        <input type="text" name="physician_type" placeholder="MD, DO, Surgeon" required><br><br>
+
+        <label for="rankID">Select Rank:</label><br>
+        <select name="rankID" required>
+            <option value="">--Select Rank--</option>
+            {% for rank in ranks %}
+                <option value="{{ rank.RankID }}">{{ rank.RankName }}</option>
+            {% endfor %}
+        </select>
+        <br><br>
+
+        <button type="submit">Submit Profile</button>
+    </form>
+
+    <form method="POST" action="{{ url_for('logout') }}">
+        <button type="submit">Logout</button>
+    </form>
+</body>
+</html>

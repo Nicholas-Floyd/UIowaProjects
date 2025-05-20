@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Manage Specializations</title>
+
+    <!-- Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    
+    <!-- jQuery and Select2 JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <!-- Layout Styling -->
+    <style>
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 40px;
+            margin-top: 20px;
+        }
+        .left-panel {
+            flex: 1;
+        }
+        .right-panel {
+            flex: 1;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 6px 10px;
+            border: 1px solid #ccc;
+        }
+        input[type="text"], select {
+            width: 300px;
+        }
+    </style>
+</head>
+<body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+            {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+
+<h1>Manage Medical Specializations</h1>
+
+<div class="container">
+    <!-- LEFT PANEL -->
+    <div class="left-panel">
+        <h2>Add Specialization</h2>
+        <form method="POST">
+            <input type="hidden" name="action" value="add">
+            <label>Specialization Name:</label>
+            <input type="text" name="specialization" required>
+            <button type="submit">Add</button>
+        </form>
+
+        <h2>Assign Specializations to User</h2>
+        <form method="POST">
+            <input type="hidden" name="action" value="assign_multiple">
+
+            <label>Username (Physician or Nurse):</label>
+            <input type="text" name="username" required placeholder="Enter username"><br><br>
+
+            <label>Select Specialization(s):</label><br>
+            <select name="specializationIDs" id="specialization-select" multiple="multiple">
+                {% for s in specializations %}
+                    <option value="{{ s.SpecializationID }}">{{ s.Specialization }}</option>
+                {% endfor %}
+            </select><br><br>
+
+            <label>User Role:</label>
+            <select name="role" required>
+                <option value="Physician">Physician</option>
+                <option value="Nurse">Nurse</option>
+            </select><br><br>
+
+            <button type="submit">Assign Specializations</button>
+        </form>
+
+        <h2>Existing Specializations</h2>
+        <p>Put # to denote unactive</p>
+        <table cellpadding="5">
+            <thead>
+                <tr>
+                    <th>Specialization</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for s in specializations %}
+                <tr>
+                    <td>{{ s.Specialization }}</td>
+                    <td>
+                        <form method="POST">
+                            <input type="hidden" name="action" value="edit">
+                            <input type="hidden" name="specID" value="{{ s.SpecializationID }}">
+                            <input type="text" name="new_spec_name" placeholder="Rename specialization" required>
+                            <button type="submit">Edit</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <br><a href="{{ url_for('admin_dashboard') }}">Back to Dashboard</a>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="right-panel">
+        <h2>Users & Their Specializations</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Role</th>
+                    <th>Specializations</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in user_specs %}
+                <tr>
+                    <td>{{ row.FirstName }} {{ row.LastName }} ({{ row.Username }})</td>
+                    <td>{{ row.Role }}</td>
+                    <td>{{ row.Specializations or 'None' }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <h2 style="margin-top: 30px;">Remove Specializations</h2>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Role</th>
+                        <th>Specialization</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in user_specs_rows %}
+                    <tr>
+                        <td>{{ row.FirstName }} {{ row.LastName }} ({{ row.Username }})</td>
+                        <td>{{ row.Role }}</td>
+                        <td>{{ row.Specialization }}</td>
+                        <td>
+                            <form method="POST">
+                                <input type="hidden" name="action" value="remove_spec">
+                                <input type="hidden" name="username" value="{{ row.Username }}">
+                                <input type="hidden" name="specID" value="{{ row.SpecializationID }}">
+                                <button type="submit">Remove</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('#specialization-select').select2({
+            placeholder: "Select one or more specializations",
+            allowClear: true,
+            width: '300px'
+        });
+    });
+</script>
+
+</body>
+</html>

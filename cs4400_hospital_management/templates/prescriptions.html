@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>My Prescriptions</title>
+</head>
+<body>
+    <h1>My Prescriptions</h1>
+
+    {% if prescriptions %}
+        <table border="1" cellpadding="5" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>Date Issued</th>
+                    <th>Delivery Method</th>
+                    <th>Refill</th>
+                    <th>Status</th>
+                    <th>Pharmacy</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in prescriptions %}
+                <tr>
+                    <td>{{ p.DateOfIssue }}</td>
+                    <td>{{ p.DeliveryMethod }}</td>
+                    <td>{{ 'Yes' if p.Refill else 'No' }}</td>
+                    <td>{{ p.PrescriptionStatus }}</td>
+                    <td>{{ p.PharmacyID }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No prescriptions found.</p>
+    {% endif %}
+
+    <a href="{{ url_for('home') }}">Back to Home</a>
+</body>
+</html>

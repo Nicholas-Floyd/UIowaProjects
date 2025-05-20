@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Physician Dashboard</title>
+</head>
+<body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+            {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <h1>Welcome, Dr. {{ session.name }}</h1>
+
+    <h2>Menu</h2>
+    <ul>
+        <li><a href="{{ url_for('physician_appointments') }}">Manage Appointments and Time Slots</a></li>
+        <li><a href="{{ url_for('physician_bed_management') }}">Assign or Unassign Beds</a></li>
+
+        <li><a href="#">View Profile</a></li>
+        <li><a href="#">Update Availability</a></li>
+        <li><a href="{{ url_for('home') }}">Back to Home</a></li>
+
+
+    </ul>
+
+    <form method="POST" action="{{ url_for('logout') }}">
+        <button type="submit">Logout</button>
+    </form>
+
+</body>
+</html>
+

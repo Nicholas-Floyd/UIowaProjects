@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Lab Result Details</title>
+</head>
+<body>
+    <h1>Lab Test Details</h1>
+
+    {% if result %}
+        <ul>
+            <li><strong>Test Name:</strong> {{ result.TestName }}</li>
+            <li><strong>Date:</strong> {{ result.ResultDate }}</li>
+            <li><strong>Value:</strong> {{ result.ResultValue }} {{ result.Units }}</li>
+            <li><strong>Interpretation:</strong> {{ result.ResultInterpretation }}</li>
+            <li><strong>Status:</strong> {{ result.LabStatus }}</li>
+        </ul>
+    {% else %}
+        <p>Result not found.</p>
+    {% endif %}
+
+    <a href="{{ url_for('view_all_lab_results') }}">Back to All Lab Results</a>
+</body>
+</html>

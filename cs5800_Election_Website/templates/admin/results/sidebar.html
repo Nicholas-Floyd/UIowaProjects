@@ -1,0 +1,33 @@
+{% extends "admin/adminBase.html" %}
+{% set active_page = "results" %}
+
+{% block content %}
+<div class="d-flex flex-column flex-shrink-0 p-3 bg-light border-end" id="sidebar" style="width: 280px">
+  <a href="{{ url_for('admin.results.home')}}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-decoration-none">
+    <span class="fs-4 link-dark">Completed Elections</span>
+  </a>
+  <hr>
+  <ul class="nav nav-pills flex-column mb-auto">
+    {% for election in elections %}
+    <li class="nav-item">
+      <a href="{{ election.url }}" class="nav-link link-dark {{ 'active' if active_sidebar == election.id else '' }}">
+        {{ election.title }}
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+<button id="toggleSidebar" style="width: 10px; border: none; padding: 0; color:grey;"
+  onclick=toggleSidebar()>||</button>
+
+<script>
+  function toggleSidebar() {
+    var sidebar = document.getElementById('sidebar');
+    sidebar.classList.toggle('d-none');
+  }
+</script>
+
+<!-- main content -->
+{% block main_content %}{% endblock %}
+
+{% endblock %}

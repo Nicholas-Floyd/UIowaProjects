@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Complete Nurse Profile</title>
+</head>
+<body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+            {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+
+    <h1>{% if assigned_departments %}Edit{% else %}Complete{% endif %} Your Nurse Profile</h1>
+
+    <form method="POST">
+        <h3>Select Department(s):</h3>
+        {% for dept in departments %}
+            <input type="checkbox" name="DeptIDs" value="{{ dept.DeptID }}"
+                {% if dept.DeptID in assigned_departments %}checked{% endif %}>
+            <label>{{ dept.DeptName }}</label><br>
+        {% endfor %}
+        <br>
+
+        <button type="submit">{% if assigned_departments %}Update Profile{% else %}Submit Profile{% endif %}</button>
+    </form>
+
+    <form method="POST" action="{{ url_for('logout') }}">
+        <button type="submit">Logout</button>
+    </form>
+
+</body>
+</html>

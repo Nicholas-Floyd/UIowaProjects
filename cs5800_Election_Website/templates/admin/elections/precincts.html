@@ -1,0 +1,136 @@
+{% extends '/admin/elections/electionsSidebar.html' %}
+{% set active_sidebar = "precincts" %}
+
+{% block main_content %}
+<div class="container my-5 ms-2">
+  <h1>Precincts</h1>
+  <!-- New precinct button for modal -->
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#precinctModal">
+    New
+  </button>
+  <!-- Table of precincts -->
+  <hr class="mb-0">
+  {% if precincts %}
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Precinct Name</th>
+        <th scope="col">Manager</th>
+        <th scope="col">Address</th>
+        <th scope="col">State Official Contact</th>
+        <th scope="col">Zip Codes</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for precinct in precincts %}
+      <tr>
+        <td>{{ precinct.name }}</td>
+        <td>{{ precinct.manager.name if precinct.manager else 'N/A' }}</td>
+        <td>{{ precinct.natural_geography }}</td>
+        <td>{{ precinct.state_official }}</td>
+        <td>
+          {% if precinct.zipcodes %}
+            {% for zip_code in precinct.zipcodes %}
+              {{ zip_code.zipcode }}{% if not loop.last %}, {% endif %}
+            {% endfor %}
+          {% else %}
+            N/A
+          {% endif %}
+        </td>
+        <td>
+          <a href="#" class="btn btn-sm btn-primary">Edit</a>
+          <a href="#" class="btn btn-sm btn-danger">Delete</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+    <p>No precincts available.</p>
+  {% endif %}
+  {{ render_flashes(get_flashed_messages(with_categories=True)) }}
+</div>
+
+<!-- Modal for creating a new precinct -->
+<div class="modal fade" id="precinctModal" tabindex="-1" aria-labelledby="precinctModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Begin Form -->
+      <form method="POST" action="{{ url_for('admin.elections.precincts') }}">
+        <div class="modal-header">
+          <h5 class="modal-title" id="precinctModalLabel">Create Precinct</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <!-- Precinct Name -->
+          <div class="mb-3">
+            <label for="precinct-name" class="form-label">Precinct Name</label>
+            <input type="text" class="form-control" id="precinct-name" name="name" placeholder="Enter precinct name" required>
+          </div>
+
+          <!-- Address Field -->
+          <div class="mb-3">
+            <label for="precinct-address" class="form-label">Voting Address</label>
+            <input type="text" class="form-control" id="precinct-address" name="natural_geography" placeholder="Enter address" required>
+          </div>
+
+          <!-- Precinct Manager Field -->
+          <div class="mb-3">
+            <label for="precinct-manager" class="form-label">Precinct Manager</label>
+            <select id="precinct-manager" class="form-control" name="manager_id" required>
+              <option value="">Select a manager</option>
+              {% for manager in managers %}
+                <option value="{{ manager.id }}">{{ manager.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <!-- State Official Contact Field -->
+          <div class="mb-3">
+            <label for="state-official-contact" class="form-label">State Official Contact</label>
+            <input type="text" class="form-control" id="state-official-contact" name="state_official" placeholder="Enter state official contact" required>
+          </div>
+
+          <!-- Selectize box for Zip Codes -->
+          <div class="mb-3">
+            <label for="select-zipcodes" class="form-label">Zip Codes</label>
+            <select id="select-zipcodes" class="form-control" name="zipcodes" multiple required>
+              {% for zip_code in zip_codes %}
+                <option value="{{ zip_code }}">{{ zip_code }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <!-- Submit button to create the precinct -->
+          <button type="submit" class="btn btn-primary">Create</button>
+        </div>
+      </form>
+      <!-- End Form -->
+    </div>
+  </div>
+</div>
+
+<!-- Include the Selectize.js initialization scripts -->
+<script>
+  $(document).ready(function() {
+    $('#precinct-manager').selectize({
+      maxItems: 1, // Allows single selection
+      sortField: 'text',
+      create: false,
+      closeAfterSelect: true
+    });
+
+    $('#select-zipcodes').selectize({
+      maxItems: null, // Allows multiple selections
+      sortField: 'text',
+      create: false,
+      closeAfterSelect: true,
+      placeholder: 'Select zip codes'
+    });
+  });
+</script>
+
+{% endblock %}

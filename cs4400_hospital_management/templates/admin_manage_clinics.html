@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Manage Clinics</title>
+    <style>
+        .outer-wrapper {
+            max-width: 1000px;  /* narrower layout = more central */
+            margin: 0 auto;
+            padding: 20px;
+        }
+    
+        .split-container {
+            display: flex;
+            gap: 40px;  /* adjust gap between panels */
+            align-items: flex-start;
+        }
+    
+        .left-panel {
+            flex: 1;
+        }
+    
+        .right-panel {
+            width: 400px;  /* was 350 before, wider pulls it closer */
+            /* no margin-left:auto anymore */
+        }
+    </style>
+    
+</head>
+<body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+            {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <div class="outer-wrapper">
+        <h1>Clinic Management</h1>
+
+        <div class="split-container">
+            <!-- LEFT SIDE: Add/Edit Clinics -->
+            <div class="left-panel">
+                <h2>Add New Clinic</h2>
+                <form method="POST">
+                    <input type="hidden" name="action" value="add">
+                    <input type="text" name="ClinicName" placeholder="Enter clinic name" required>
+                    <button type="submit">Add Clinic</button>
+                </form>
+
+                <h2>Existing Clinics</h2>
+                <table border="1" cellpadding="5">
+                    <thead>
+                        <tr>
+                            <th>Clinic Name</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for clinic in clinics %}
+                        <tr>
+                            <td>{{ clinic['ClinicName'] }}</td>
+                            <td>
+                                <form method="POST">
+                                    <input type="hidden" name="action" value="edit">
+                                    <input type="hidden" name="clinicID" value="{{ clinic['ClinicID'] }}">
+                                    <input type="text" name="new_ClinicName" placeholder="Rename clinic" required>
+                                    <button type="submit">Edit</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr><td colspan="2">No clinics found.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <br>
+                <a href="{{ url_for('admin_dashboard') }}">Back to Admin Dashboard</a>
+            </div>
+
+            <!-- RIGHT SIDE: Clinic-Department links -->
+            <div class="right-panel">
+                <h2>Clinics & Departments</h2>
+                <table border="1" cellpadding="5">
+                    <thead>
+                        <tr>
+                            <th>Clinic</th>
+                            <th>Department</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in clinic_links %}
+                        <tr>
+                            <td>{{ row.ClinicName }}</td>
+                            <td>{{ row.DeptName }}</td>
+                            <td>
+                                <form method="POST">
+                                    <input type="hidden" name="action" value="remove_clinic_dept">
+                                    <input type="hidden" name="clinicID" value="{{ row.ClinicID }}">
+                                    <input type="hidden" name="DeptID" value="{{ row.DeptID }}">
+                                    <button type="submit">Remove</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr><td colspan="3">No clinic-department links found.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

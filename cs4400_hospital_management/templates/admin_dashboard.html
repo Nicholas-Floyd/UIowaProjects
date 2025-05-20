@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Admin Dashboard</title>
+    <script>
+        function sortTable(columnIndex) {
+            var table = document.getElementById("userTable");
+            var switching = true;
+            var shouldSwitch;
+            var dir = "asc"; 
+            var switchcount = 0;
+
+            while (switching) {
+                switching = false;
+                var rows = table.rows;
+
+                for (var i = 1; i < rows.length - 1; i++) {
+                    shouldSwitch = false;
+                    var x = rows[i].getElementsByTagName("TD")[columnIndex];
+                    var y = rows[i + 1].getElementsByTagName("TD")[columnIndex];
+
+                    if (dir === "asc") {
+                        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    } else if (dir === "desc") {
+                        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (shouldSwitch) {
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                    switchcount++;
+                } else {
+                    if (switchcount === 0 && dir === "asc") {
+                        dir = "desc";
+                        switching = true;
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+            {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <h1>Admin Dashboard</h1>
+
+    <h2>Admin Actions</h2>
+    <ul>
+        <li><a href="{{ url_for('home') }}">Back to Home</a></li>
+        <li><a href="{{ url_for('admin_view_appointments') }}">Manage Appointments</a></li>
+        <li><a href="{{ url_for('admin_manage_clinics') }}">Manage Clinics</a></li>
+        <li><a href="{{ url_for('admin_manage_departments') }}">Manage Departments</a></li>
+        <li><a href="{{ url_for('admin_manage_specializations') }}">Manage Specializations</a></li>
+        <li><a href="{{ url_for('admin_bed_management') }}">Manage Beds</a></li>
+    </ul>
+
+    <p><a href="{{ url_for('create_user') }}">Create New User</a></p>
+
+    <h2>Registered Users</h2>
+
+    <table id="userTable" border="1" cellpadding="8">
+        <thead>
+            <tr>
+                <th onclick="sortTable(0)">UserID</th>
+                <th onclick="sortTable(1)">Username</th>
+                <th onclick="sortTable(2)">Full Name</th>
+                <th onclick="sortTable(3)">Role</th>
+                <th onclick="sortTable(4)">Email</th>
+            </tr>
+        </thead>
+        
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.UserID }}</td>
+                <td>{{ user.Username }}</td>
+                <td>{{ user.FullName }}</td>
+                <td>{{ user.RoleName }}</td>
+                <td>{{ user.Email }}</td>
+                
+            </tr>
+            {% endfor %}
+        </tbody>
+        
+    </table>
+
+
+    
+
+
+
+
+    <h2>SOAP Summaries</h2>
+
+    <table id="summaryTable" border="1" cellpadding="8">
+        <thead>
+            <tr>
+                <th onclick="sortTable(0)">SummaryID</th>
+                <th onclick="sortTable(1)">Patient Name</th>
+                <th onclick="sortTable(2)">Subjective (CC, HPI)</th>
+                <th onclick="sortTable(3)">Objective (BP, HR, Temp)</th>
+                <th onclick="sortTable(4)">Assessment (Diagnosis, Notes)</th>
+                <th onclick="sortTable(5)">Plan (Status, Plan Notes)</th>
+            </tr>
+        </thead>
+        
+        <tbody>
+            {% for summary in summaries %}
+            <tr>
+                <td>{{ summary[0] }}</td> <!-- SummaryID -->
+                <td>{{ summary[1] }} {{ summary[2] }}</td> <!-- FirstName, LastName -->
+                <td>{{ summary[3] }} - {{ summary[4] }}</td> <!-- CC and HPI -->
+                <td>{{ summary[5] }} - {{ summary[6] }} - {{ summary[7] }}</td> <!-- BP, HR, Temp -->
+                <td>{{ summary[8] }} - {{ summary[9] }}</td> <!-- Diagnosis, Notes -->
+                <td>{{ summary[10] }} - {{ summary[11] }}</td> <!-- Status, PlanNotes -->
+            </tr>
+            {% endfor %}
+        </tbody>
+        
+    </table>
+
+
+
+
+
+
+    
+    <form method="POST" action="{{ url_for('logout') }}">
+        <button type="submit">Logout</button>
+    </form>
+
+</body>
+</html>

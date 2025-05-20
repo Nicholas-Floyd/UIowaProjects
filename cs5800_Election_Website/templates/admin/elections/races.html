@@ -1,0 +1,118 @@
+{% extends '/admin/elections/electionsSidebar.html' %}
+{% set active_sidebar = "races" %}
+
+{% block main_content %}
+<div class="container my-5 ms-2">
+  <h1>Races</h1>
+  <!-- New race button for modal -->
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#raceModal">
+    New
+  </button>
+  <!-- Table of races -->
+  <hr class="mb-0">
+  {% if races %}
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Race Title</th>
+        <th scope="col">Candidates</th>
+        <th scope="col">Precincts</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for race in races %}
+      <tr>
+        <td>{{ race.name }}</td>
+        <td>
+          {% for candidate in race.candidates %}
+          {{ candidate.name }}{% if not loop.last %}, {% endif %}
+          {% endfor %}
+        </td>
+        <td>
+          {% for precinct in race.precincts %}
+          {{ precinct.name }}{% if not loop.last %}, {% endif %}
+          {% endfor %}
+        </td>
+        <td>
+          <a href="#" class="btn btn-sm btn-primary">Edit</a>
+          <a href="#" class="btn btn-sm btn-danger">Delete</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p>No races available.</p>
+  {% endif %}
+  {{ render_flashes(get_flashed_messages(with_categories=True)) }}
+</div>
+
+<!-- Modal for creating a new race -->
+<div class="modal fade" id="raceModal" tabindex="-1" aria-labelledby="raceModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Begin Form -->
+      <form method="POST" action="{{ url_for('admin.elections.races') }}">
+        <div class="modal-header">
+          <h5 class="modal-title" id="raceModalLabel">Create Race</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <!-- Race Title Text Box -->
+          <div class="mb-3">
+            <label for="race-title" class="form-label">Race Title</label>
+            <input type="text" class="form-control" id="race-title" name="title" placeholder="Enter race title" required>
+          </div>
+
+          <!-- Selectize box for Candidates -->
+          <div class="mb-3">
+            <label for="select-candidates" class="form-label">Candidates</label>
+            <select id="select-candidates" class="form-control" name="candidates" multiple required>
+              {% for candidate in candidates %}
+                <option value="{{ candidate.id }}">{{ candidate.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <!-- Selectize box for Precincts -->
+          <div class="mb-3">
+            <label for="select-precincts" class="form-label">Precincts</label>
+            <select id="select-precincts" class="form-control" name="precincts" multiple required>
+              {% for precinct in precincts %}
+                <option value="{{ precinct.id }}">{{ precinct.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <!-- Submit button to create the race -->
+          <button type="submit" class="btn btn-primary">Create</button>
+        </div>
+      </form>
+      <!-- End Form -->
+    </div>
+  </div>
+</div>
+
+<!-- Include the Selectize.js initialization scripts -->
+<script>
+  $(document).ready(function() {
+    $('#select-candidates').selectize({
+      maxItems: null, // Allows multiple selections
+      sortField: 'text',
+      closeAfterSelect: true,
+      placeholder: 'Select candidates'
+    });
+
+    $('#select-precincts').selectize({
+      maxItems: null,
+      sortField: 'text',
+      closeAfterSelect: true,
+      placeholder: 'Select precincts'
+    });
+  });
+</script>
+
+{% endblock %}

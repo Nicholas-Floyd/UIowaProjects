@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='content/global.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='content/style.css') }}" />
+    <title>View Message</title>
+</head>
+<body>
+    <div class="desktop">
+        <!-- Banner Section -->
+        <div class="div">
+            <div class="overlap">
+                <div class="banner-background"></div>
+                <div class="home-link-background"></div>
+
+                <!-- Iowa Home Link -->
+                <div class="text-wrapper">
+                    <a href="{{ url_for('index') }}" class="no-link-style">IOWA</a>
+                </div>
+
+                <!-- Login/Logout Button -->
+                <div class="auth-button" style="position: absolute; right: 20px; top: 20px;">
+                    {% if session.get('logged_in') %}
+                    <a href="{{ url_for('logout') }}" style="font-family: 'Zilla Slab'; font-size: 24px; text-decoration: none; color: black; background: #F0F0F0; padding: 10px 20px; border-radius: 8px; border: 1px solid #757575;">
+                        Logout
+                    </a>
+                    {% else %}
+                    <a href="{{ url_for('login') }}" style="font-family: 'Zilla Slab'; font-size: 24px; text-decoration: none; color: black; background: #F0F0F0; padding: 10px 20px; border-radius: 8px; border: 1px solid #757575;">
+                        Login
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Sidebar Section -->
+            <div class="overlap-group" style="width: 270px; background: #F0F0F0; position: absolute; top: 140px; left: 0;">
+                <div class="text-wrapper-2">Team Members</div>
+                <div class="text-wrapper-3"><a href="{{ url_for('team_member', name='michael') }}">Michael West</a></div>
+                <div class="text-wrapper-4"><a href="{{ url_for('team_member', name='nick') }}">Nick Floyd</a></div>
+                <div class="text-wrapper-5"><a href="{{ url_for('team_member', name='robby') }}">Robby Modica</a></div>
+                <div class="text-wrapper-6"><a href="{{ url_for('team_member', name='alex') }}">Alex Viner</a></div>
+            </div>
+
+            <!-- Message Content Section -->
+            <div class="overlap-group" style="margin-left: 300px; padding: 20px; top: 140px; position: relative;">
+                <h2 class="text-wrapper-2" style="font-family: 'Zilla Slab'; font-size: 32px;">Message Details</h2>
+                <div class="text-wrapper-4" style="font-family: 'Roboto'; font-size: 20px; margin-top: 5px;">{{ content | safe }}</div>
+                <div class="text-wrapper-5" style="font-family: 'Roboto'; font-size: 20px; margin-top: 5px;">{{ timestamp }}</div>
+                <a class="text-wrapper-6" href="{{ url_for('list_messages') }}" style="color: #0d5d92; text-decoration: underline; font-size: 20px; margin-top: 20px;">Back to Messages</a>
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>

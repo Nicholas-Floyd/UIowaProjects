@@ -1,0 +1,38 @@
+{% extends "/manager/manage/sidebar.html" %}
+{% set active_sidebar = "elections" %}
+
+{% block main_content %}
+<div class="container my-5 px-4">
+  <h2>Elections</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Election Title</th>
+        <th>Polling Date</th>
+        <th>Active</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for election in elections %}
+      <tr>
+        <td>{{ election.title }}</td>
+        <td>{{ election.polling_date.strftime('%Y-%m-%d') }}</td>
+        <td>
+          <form method="POST" action="{{ url_for('manager.elections') }}">
+            <input type="hidden" name="election_id" value="{{ election.id }}">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="ballot_active" id="ballot_active_{{ election.id }}"
+                {% if election.ballot_active %}checked{% endif %} onchange="this.form.submit()">
+              <label class="form-check-label" for="ballot_active_{{ election.id }}">
+                {% if election.ballot_active %}Active{% else %}Inactive{% endif %}
+              </label>
+            </div>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {{ render_flashes(get_flashed_messages(with_categories=True)) }}
+</div>
+{% endblock %}

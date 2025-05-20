@@ -1,0 +1,46 @@
+{% extends "admin/adminBase.html" %}
+{% set active_page = "users" %}
+{% set active_sidebar = active_sidebar|default('') -%}
+
+{% block content %}
+<!-- sidebar -->
+<div class="d-flex flex-column flex-shrink-0 p-3 bg-light border-end" id="sidebar" style="width: 280px">
+  <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-decoration-none">
+    <span class="fs-4 link-dark">Manage Users</span>
+  </a>
+  <hr>
+  <ul class="nav nav-pills flex-column mb-auto">
+    <li>
+      <a href="{{ url_for('admin.users.search') }}"
+        class="nav-link link-dark {{ 'active' if active_sidebar == 'search' else '' }}">
+        Search
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="{{ url_for('admin.users.approve') }}"
+        class="nav-link link-dark {{ 'active' if active_sidebar == 'approve_voters' else '' }}" aria-current="page">
+        Approve Voters
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="{{ url_for('admin.users.approve_managers') }}"
+        class="nav-link link-dark {{ 'active' if active_sidebar == 'approve_managers' else '' }}" aria-current="page">
+        Approve Managers
+      </a>
+    </li>
+  </ul>
+</div>
+<button id="toggleSidebar" style="width: 10px; border: none; padding: 0; color:grey;"
+  onclick=toggleSidebar()>||</button>
+
+<script>
+  function toggleSidebar() {
+    var sidebar = document.getElementById('sidebar');
+    sidebar.classList.toggle('d-none');
+  }
+</script>
+
+<!-- main content -->
+{% block main_content %}{% endblock %}
+
+{% endblock %}

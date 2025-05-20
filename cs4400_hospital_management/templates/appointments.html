@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Schedule Appointment</title>
+</head>
+<body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+            {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+
+    <h1>My Appointments</h1>
+
+    <!-- Dropdown View -->
+    <form method="GET" action="{{ url_for('appointments') }}">
+        <label>View:</label>
+        <select name="mode" onchange="this.form.submit()">
+            <option value="upcoming" {% if mode == 'upcoming' %}selected{% endif %}>Upcoming Appointments</option>
+            <option value="past" {% if mode == 'past' %}selected{% endif %}>Past Appointments</option>
+        </select>
+    </form>
+
+    <!-- Appointment Table -->
+    <table border="1" cellpadding="5" cellspacing="0">
+        <thead>
+            <tr>
+                <th>Appointment Date</th>
+                <th>Physician</th>
+                <th>Department</th>
+                <th>Type</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for appt in appointments %}
+                <tr>
+                    <td>{{ appt.ApptDate }}</td>
+                    <td>{{ appt.PhysicianName }}</td>
+                    <td>{{ appt.DeptName }}</td>
+                    <td>{{ appt.TypeName }}</td>
+                    <td>{{ appt.ApptStatus }}</td>
+                    <td>
+                        {% if appt.ApptStatus == 'Scheduled' or appt.ApptStatus == 'Rescheduled' %}
+                            <form method="POST" action="{{ url_for('cancel_appointment', apptID=appt.ApptID) }}" style="display:inline;">
+                                <button type="submit" onclick="return confirm('Are you sure you want to cancel this appointment?')">Cancel</button>
+                            </form>
+                            <form method="GET" action="{{ url_for('reschedule_appointment', apptID=appt.ApptID) }}" style="display:inline;">
+                                <button type="submit">Reschedule</button>
+                            </form>
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                    
+                    
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5">No appointments found.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <hr>
+
+    <h1>Schedule an Appointment</h1>
+
+    <form method="POST">
+        <fieldset>
+            <legend>Appointment Details</legend>
+
+            <label>Select Department:</label><br>
+            <select name="DeptID" id="DeptID" required onchange="loadPhysicians()">
+                <option value="">--Select Department--</option>
+                {% for dept in departments %}
+                    <option value="{{ dept.DeptID }}">{{ dept.DeptName }}</option>
+                {% endfor %}
+            </select><br><br>
+
+            <label>Select Physician:</label><br>
+            <select name="physicianID" id="physicianID" required onchange="loadSlots()">
+                <option value="">--Select Physician--</option>
+            </select><br><br>
+
+            <label>Select Time Slot:</label><br>
+            <select name="slotID" id="slotID" required>
+                <option value="">--Select Slot--</option>
+            </select><br><br>
+
+            <label>Select Appointment Type:</label><br>
+            <select name="typeID" required>
+                {% for t in types %}
+                    <option value="{{ t.TypeID }}">{{ t.TypeName }}</option>
+                {% endfor %}
+            </select><br><br>
+
+            <button type="submit">Schedule Appointment</button>
+        </fieldset>
+    </form>
+
+    <br>
+
+    <a href="{{ url_for('home') }}">Back to Home</a>
+
+    <form method="POST" action="{{ url_for('logout') }}">
+        <button type="submit">Logout</button>
+    </form>
+
+    <!-- Javascript for loading physicians and slots -->
+    <script>
+    function loadPhysicians() {
+        const deptId = document.getElementById('DeptID').value;
+        if (!deptId) return;
+
+        fetch(`/get_physicians/${deptId}`)
+            .then(response => response.json())
+            .then(data => {
+                const physicianSelect = document.getElementById('physicianID');
+                physicianSelect.innerHTML = '<option value="">--Select Physician--</option>';
+                data.forEach(physician => {
+                    physicianSelect.innerHTML += `<option value="${physician.PhysicianID}">${physician.FirstName} ${physician.LastName}</option>`;
+                });
+                document.getElementById('slotID').innerHTML = '<option value="">--Select Slot--</option>';
+            });
+    }
+
+    function loadSlots() {
+        const physicianId = document.getElementById('physicianID').value;
+        if (!physicianId) return;
+
+        fetch(`/get_slots/${physicianId}`)
+            .then(response => response.json())
+            .then(data => {
+                const slotSelect = document.getElementById('slotID');
+                slotSelect.innerHTML = '<option value="">--Select Slot--</option>';
+                data.forEach(slot => {
+                    slotSelect.innerHTML += `<option value="${slot.SlotID}">${slot.StartTime} to ${slot.EndTime}</option>`;
+                });
+            });
+    }
+    </script>
+
+</body>
+</html>

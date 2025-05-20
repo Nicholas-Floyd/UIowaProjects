@@ -1,0 +1,35 @@
+{% extends '/voter/results/sidebar.html' %}
+
+{% block main_content %}
+<div class="container my-5 ms-2">
+
+  <h2>{{ election_result.election.title }}</h2>
+  <p>Polling Date: {{ election_result.election.polling_date.strftime('%Y-%m-%d') }}</p>
+  
+  {% for race_result in election_result.races %}
+  <h3>{{ race_result.race.name }}</h3>
+  <p><strong>Winner(s):</strong>
+    {% for winner in race_result.winner_candidates %}
+    {{ winner.name }}{% if not loop.last %}, {% endif %}
+    {% endfor %}
+  </p>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Candidate</th>
+        <th>Votes</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for candidate in race_result.race.candidates %}
+      <tr>
+        <td>{{ candidate.name }}</td>
+        <td>{{ race_result.vote_counts.get(candidate.id, 0) }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% endfor %}
+  {{ render_flashes(get_flashed_messages(with_categories=True)) }}
+</div>
+{% endblock %}

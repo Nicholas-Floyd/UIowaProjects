@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <!-- Linking to global.css and michaelStyle.css using Flask's url_for -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='content/global.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='content/michaelStyle.css') }}">
+  </head>
+  <body>
+    <div class="desktop">
+        <div class="div">
+            <div class="overlap">
+                <div class="banner-background"></div>
+                <div class="home-link-background"></div>
+                <div class="text-wrapper">
+                    <a href="{{ url_for('index') }}" class="no-link-style">IOWA</a>
+                </div>
+                <div class="auth-button" style="position: absolute; right: 20px; top: 20px;">
+                    {% if session.get('logged_in') %}
+                    <a href="{{ url_for('logout') }}" style="font-family: 'Zilla Slab'; font-size: 24px; text-decoration: none; color: black; background: #F0F0F0; padding: 10px 20px; border-radius: 8px; border: 1px solid #757575;">
+                        Logout
+                    </a>
+                    {% else %}
+                    <a href="{{ url_for('login') }}" style="font-family: 'Zilla Slab'; font-size: 24px; text-decoration: none; color: black; background: #F0F0F0; padding: 10px 20px; border-radius: 8px; border: 1px solid #757575;">
+                        Login
+                    </a>
+                    {% endif %}
+                </div>
+                <div class="overlap-group">
+                    <div class="text-wrapper-2">Team Members</div>
+                    <div class="text-wrapper-3"><a href="{{ url_for('team_member', name='michael') }}">Michael West</a></div>
+                    <div class="text-wrapper-4"><a href="{{ url_for('team_member', name='nick') }}">Nick Floyd</a></div>
+                    <div class="text-wrapper-5"><a href="{{ url_for('team_member', name='robby') }}">Robby Modica</a></div>
+                    <div class="text-wrapper-6"><a href="{{ url_for('team_member', name='alex') }}">Alex Viner</a></div>
+                </div>
+                <img class="headshot" src="SeniorDesignLab3/static/img/alexHeadShot.JPG" alt="Headshot" />
+                <div class="overlap-2">
+                    <div class="text-wrapper-7">Michael West</div>
+                    <p class="p">Undergrad Senior in Electrical (Computer) Engineering</p>
+                </div>
+                <div class="text-wrapper-8">Projects</div>
+
+                <a href="mailto:michael-b-west@uiowa.edu" target="_blank" rel="noopener noreferrer">
+                    <div class="text-wrapper-9">michael-b-west@uiowa.edu</div>
+                </a>
+                <div class="element">
+                    <a href="tel:+1(515)520-3034" target="_blank" rel="noopener noreferrer">
+                        <div class="text-wrapper-10">+1(515)-520-3034</div>
+                    </a>
+                </div>
+                <div class="text-wrapper-11">Infrared Transmitter and Receiver</div>
+                <div class="text-wrapper-12">Digital Thermometer</div>
+                <div class="text-wrapper-13">Digital Thermometer Web-Interface</div>
+                <p class="text-wrapper-14">Infrared ‘Line Of Sight’ Detector</p>
+                <div class="text-wrapper-15">Keyboard Synthesizer</div>
+                <p class="text-wrapper-16">Asynchronous Rotary Spark Gap Tesla Coil (Ongoing)</p>
+                <div class="text-wrapper-17">Rotary-Pulse-Generator Controlled Fan System</div>
+                <div class="text-wrapper-18">ASCII Web-Camera Rendering Software</div>
+                <div class="text-wrapper-19">Infrared Transmitter and Receiver</div>
+            </div>
+            <div class="contact-form">
+                <h2>Contact Me</h2>
+                <form action="{{ url_for('contact', name='michael') }}" method="POST">
+                    <label for="message">Message:</label><br>
+                    <textarea id="message" name="message" rows="4" cols="50" placeholder="Enter your message here..." required></textarea><br>
+                    <button type="submit">Send Message</button>
+                </form>
+            </div>
+        </div>
+  </body>
+</html>

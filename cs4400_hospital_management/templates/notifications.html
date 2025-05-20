@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>My Notifications</title>
+</head>
+<body>
+    <h1>My Notifications</h1>
+
+    {% if notifications %}
+        <ul>
+            {% for n in notifications %}
+                <li>
+                    <strong>{{ n.DateCreated }} [{{ n.PriorityName }}]</strong>: 
+                    {{ n.MessageContent }} 
+                    ({{ n.StatusName }})
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No notifications found.</p>
+    {% endif %}
+
+    <a href="{{ url_for('home') }}">Back to Home</a>
+</body>
+</html>

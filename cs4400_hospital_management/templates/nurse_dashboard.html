@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Nurse Dashboard</title>
+</head>
+<body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+            {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+
+    <h1>Welcome, {{ session.name }} (Nurse)</h1>
+
+    <h2>Assigned Departments:</h2>
+
+    {% if assigned_departments %}
+        <ul>
+            {% for dept in assigned_departments %}
+                <li>{{ dept.DeptName }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>You have not been assigned to any departments yet.</p>
+    {% endif %}
+
+    <br>
+
+    <a href="{{ url_for('complete_nurse_profile') }}">
+        <button>Edit Assigned Departments</button>
+    </a>
+
+    <br><br>
+
+    <a href="{{ url_for('home') }}">Back to Home</a>
+
+    <form method="POST" action="{{ url_for('logout') }}">
+        <button type="submit">Logout</button>
+    </form>
+
+</body>
+</html>

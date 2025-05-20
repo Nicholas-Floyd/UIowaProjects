@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Manage My Appointments</title>
+</head>
+<body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+            {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+
+    <h1>My Appointments (Physician View)</h1>
+
+    <!-- Dropdown View -->
+    <form method="GET" action="{{ url_for('physician_appointments') }}">
+        <label>View:</label>
+        <select name="mode" onchange="this.form.submit()">
+            <option value="upcoming" {% if mode == 'upcoming' %}selected{% endif %}>Upcoming Appointments</option>
+            <option value="past" {% if mode == 'past' %}selected{% endif %}>Past Appointments</option>
+            <option value="cancelled" {% if mode == 'cancelled' %}selected{% endif %}>Cancelled Appointments</option>
+        </select>
+    </form>
+
+    <!-- Appointment Table -->
+    <table border="1" cellpadding="5" cellspacing="0">
+        <thead>
+            <tr>
+                <th>Appointment Date</th>
+                <th>Patient</th>
+                <th>Department</th>
+                <th>Type</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for appt in appointments %}
+                <tr>
+                    <td>{{ appt.ApptDate }}</td>
+                    <td>{{ appt.PatientFirstName }} {{ appt.PatientLastName }}</td>
+                    <td>{{ appt.DeptName }}</td>
+                    <td>{{ appt.TypeName }}</td>
+                    <td>{{ appt.ApptStatus }}</td>
+                    <td>
+                        {% if appt.ApptStatus == 'Scheduled' or appt.ApptStatus == 'Rescheduled' %}
+                            <form method="POST" action="{{ url_for('cancel_appointment', apptID=appt.ApptID) }}" style="display:inline;">
+                                <button type="submit" onclick="return confirm('Are you sure you want to cancel this appointment?')">Cancel</button>
+                            </form>
+                            <form method="GET" action="{{ url_for('reschedule_appointment', apptID=appt.ApptID) }}" style="display:inline;">
+                                <button type="submit">Reschedule</button>
+                            </form>
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                    
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6">No appointments found.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <hr>
+
+    <h1>Create New Availability Slot</h1>
+
+    <form method="POST">
+        <fieldset>
+            <legend>Availability Details</legend>
+
+            <label>Select Department:</label><br>
+            <select name="DeptID" required>
+                {% for dept in departments %}
+                    <option value="{{ dept.DeptID }}">{{ dept.DeptName }}</option>
+                {% endfor %}
+            </select><br><br>
+
+            <label>Start Time:</label><br>
+            <input type="datetime-local" name="start_time" required><br><br>
+
+            <label>End Time:</label><br>
+            <input type="datetime-local" name="end_time" required><br><br>
+
+            <button type="submit">Create Time Slot</button>
+        </fieldset>
+    </form>
+
+    <br>
+
+    <a href="{{ url_for('physician_dashboard') }}">Back to Dashboard</a>
+
+    <form method="POST" action="{{ url_for('logout') }}">
+        <button type="submit">Logout</button>
+    </form>
+
+</body>
+</html>

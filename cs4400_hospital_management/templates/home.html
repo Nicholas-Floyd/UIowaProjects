@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home</title>
+</head>
+<body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+            {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <h1>Welcome to the Hospital Management System</h1>
+
+    {% if session.userID %}
+        <p>Welcome, {{ session.name }}!</p>
+        
+        {% if session.role == 'Patient' %}
+            <a href="{{ url_for('appointments') }}">Schedule Appointment</a>
+        {% elif session.role == 'Physician' %}
+            <a href="{{ url_for('physician_dashboard') }}">Physician Dashboard</a>
+        {% elif session.role == 'Nurse' %}
+            <a href="{{ url_for('nurse_dashboard') }}">Nurse Dashboard</a>
+        {% elif session.role == 'Admin' %}
+            <a href="{{ url_for('admin_dashboard') }}">Admin Dashboard</a>
+        {% endif %}
+
+    {% else %}
+        <p><a href="{{ url_for('login') }}">Login</a></p>
+        <p><a href="{{ url_for('signup') }}">Signup</a></p>
+    {% endif %}
+    <p><a href="{{ url_for('edit_profile') }}">Edit Profile</a></p>
+
+    <p><a href="{{ url_for('change_password') }}">Change Password</a></p>
+
+    <form action="{{ url_for('logout') }}" method="post">
+        <button type="submit">Logout</button>
+    </form>
+    
+
+</body>
+</html>

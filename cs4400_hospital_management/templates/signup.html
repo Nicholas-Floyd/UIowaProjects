@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign Up</title>
+</head>
+<body>
+  {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+            {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <h1>Patient Sign Up</h1>
+
+    <p><a href="{{ url_for('login') }}">Login</a></p>
+
+
+    <!-- Flash messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}
+      {% if category == 'success' %}
+      <p style="color: green;">{{ message }}</p>
+    {% else %}
+      <p style="color: red;">{{ message }}</p>
+    {% endif %}
+    
+      {% endfor %}
+    {% endwith %}
+
+    <form method="POST" autocomplete="off">
+        <label>Username:</label> 
+        <input type="text" name="username" required><br><br>
+
+        <label>First Name:</label>
+        <input type="text" name="first_name" required><br><br>
+
+        <label>Last Name:</label>
+        <input type="text" name="last_name" required><br><br>
+
+        <label>Email:</label>
+        <input type="email" name="email" required><br><br>
+
+        <label>Password:</label>
+        <input type="password" name="password" required><br><br>
+
+        <label>Phone:</label>
+        <input type="text" name="phone"><br><br>
+
+        <label>Gender:</label>
+        <select name="gender">
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Non-Binary">Non-Binary</option>
+            <option value="Other">Other</option>
+        </select><br><br>
+
+        <label>Sex:</label>
+        <select name="sex">
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+        </select><br><br>
+
+        <label>Date of Birth:</label>
+        <input type="date" name="dob" required><br><br>
+
+        <input type="submit" value="Sign Up">
+    </form>
+</body>
+</html>

@@ -1,0 +1,112 @@
+{% extends '/admin/elections/electionsSidebar.html' %}
+{% set active_sidebar = "elections" %}
+
+{% block main_content %}
+<div class="container my-5 ms-2">
+  <h1>Elections</h1>
+  <!-- New election button for modal -->
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    New
+  </button>
+  <!-- Table of elections -->
+  <hr class="mb-0">
+  {% if elections %}
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Title</th>
+        <th scope="col">Polling Date</th>
+        <th scope="col">Races</th>
+        <th scope="col">Ballot Active?</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for election in elections %}
+      <tr>
+        <td>{{ election.title }}</td>
+        <td>{{ election.polling_date.strftime('%m/%d/%Y') }}</td>
+        <td>
+          {% for race in election.races %}
+          {{ race.name }}{% if not loop.last %}, {% endif %}
+          {% endfor %}
+        </td>
+        <td>{{ election.ballot_active }}</td>
+        <td>
+          <a href="#" class="btn btn-sm btn-primary">Edit</a>
+          <a href="#" class="btn btn-sm btn-danger">Delete</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p>No elections available.</p>
+  {% endif %}
+  {{ render_flashes(get_flashed_messages(with_categories=True)) }}
+</div>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Begin Form -->
+      <form method="POST" action="{{ url_for('admin.elections.home') }}">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Create Election</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <!-- Title Text Box -->
+          <div class="mb-3">
+            <label for="election-title" class="form-label">Title</label>
+            <input type="text" class="form-control" id="election-title" name="title" placeholder="Enter election title"
+              required>
+          </div>
+
+          <!-- Start Date Field -->
+          <div class="mb-3">
+            <label for="polling-date" class="form-label">Polling Date</label>
+            <input type="date" class="form-control" id="polling-date" name="polling_date" required>
+          </div>
+
+          <!-- Selectize box for Races -->
+          <div class="mb-3">
+            <label for="select-races" class="form-label">Races</label>
+            <select id="select-races" class="form-control" name="races" multiple required>
+              {% for race in races %}
+              <option value="{{ race.id }}">{{ race.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <!-- Ballot Active Checkbox -->
+          <div class="mb-3">
+            <label class="form-check-label" for="ballot-active">Ballot Active?</label>
+            <select class="form-select" name="ballot_active" id="ballot-active">
+              <option value="true">Yes</option>
+              <option value="false">No</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <!-- Submit button -->
+          <button type="submit" class="btn btn-primary">Create</button>
+        </div>
+      </form>
+      <!-- End Form -->
+    </div>
+  </div>
+</div>
+
+<!-- Include the Selectize.js initialization scripts -->
+<script>
+  $(document).ready(function () {
+    $('#select-races').selectize({
+      sortField: 'text',
+      closeAfterSelect: true,
+      placeholder: 'Select Races'
+    });
+  });
+</script>
+
+{% endblock %}

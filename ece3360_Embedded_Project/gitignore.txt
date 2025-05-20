@@ -1,0 +1,14 @@
+# Build output
+/Debug
+
+
+# IDE-specific
+*.uvoptx
+*.uvprojx
+*.crun
+*.log
+
+# OS junk
+.DS_Store
+Thumbs.db
+desktop.ini

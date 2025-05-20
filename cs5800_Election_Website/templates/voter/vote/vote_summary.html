@@ -1,0 +1,26 @@
+
+<div class="container">
+  <h1>Vote Summary - {{ voter }}</h1>
+  <h3>{{ election }}</h3>
+  <p>{{ timestamp }}</p>
+  <ul>
+    {% for vote in vote_summary %}
+    <li>
+      <strong>{{ vote.race_name }}</strong>: {{ vote.candidate_name }} ({{ vote.candidate_party }})
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+
+<style>
+  body {
+    font-family: 'Arial';
+  }
+  * {
+    box-sizing: border-box;
+  }
+  .container {
+    max-width: 800px;
+    margin: 2em auto;
+  }
+</style>

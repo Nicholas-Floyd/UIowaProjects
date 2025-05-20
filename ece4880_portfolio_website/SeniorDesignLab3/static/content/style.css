@@ -1,0 +1,164 @@
+.desktop {
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+}
+
+.desktop .div {
+  background-color: #ffffff;
+  overflow: hidden;
+  width: 1440px;
+  height: 1024px;
+  position: relative;
+}
+
+.desktop .overlap {
+  width: 1440px;
+  height: 144px;
+  top: -4px;
+  position: absolute;
+  left: 0;
+}
+
+.desktop .banner-background {
+  position: absolute;
+  width: 1440px;
+  height: 140px;
+  top: 4px;
+  left: 0;
+  background-color: #ffcd00;
+}
+
+.desktop .home-link-background {
+  position: absolute;
+  width: 270px;
+  height: 144px;
+  top: 0;
+  left: 0;
+  background-color: #000000;
+}
+
+.desktop .hawkeye-icon {
+  position: absolute;
+  width: 171px;
+  height: 112px;
+  top: 16px;
+  left: 1234px;
+  object-fit: cover;
+}
+
+.desktop .text-wrapper {
+  position: absolute;
+  top: 3px;
+  left: 34px;
+  font-family: "Antonio", Helvetica;
+  font-weight: 700;
+  color: #ffcd00;
+  font-size: 96px;
+  letter-spacing: 0;
+  line-height: normal;
+  /*text-decoration: underline; */
+}
+
+.desktop .overlap-group {
+  width: 270px;
+  height: 2411px;
+  top: 140px;
+  background-color: #f0f0f0;
+  position: absolute;
+  left: 0;
+}
+
+.desktop .text-wrapper-2 {
+  top: 24px;
+  left: 23px;
+  font-weight: 500;
+  font-size: 32px;
+  white-space: nowrap;
+  position: absolute;
+  font-family: "Zilla Slab", Helvetica;
+  color: #000000;
+  letter-spacing: 0;
+  line-height: normal;
+  text-decoration: underline;
+}
+
+.desktop .text-wrapper-3 {
+  position: absolute;
+  top: 279px;
+  left: 29px;
+  font-family: "Zilla Slab", Helvetica;
+  font-weight: 400;
+  color: #000000;
+  font-size: 24px;
+  letter-spacing: 0;
+  line-height: normal;
+  text-decoration: underline;
+}
+
+.desktop .text-wrapper-4 {
+  top: 87px;
+  left: 29px;
+  position: absolute;
+  font-family: "Zilla Slab", Helvetica;
+  font-weight: 400;
+  color: #000000;
+  font-size: 24px;
+  letter-spacing: 0;
+  line-height: normal;
+  text-decoration: underline;
+}
+
+.desktop .text-wrapper-5 {
+  top: 151px;
+  left: 29px;
+  position: absolute;
+  font-family: "Zilla Slab", Helvetica;
+  font-weight: 400;
+  color: #000000;
+  font-size: 24px;
+  letter-spacing: 0;
+  line-height: normal;
+  text-decoration: underline;
+}
+
+.desktop .text-wrapper-6 {
+  top: 215px;
+  left: 30px;
+  position: absolute;
+  font-family: "Zilla Slab", Helvetica;
+  font-weight: 400;
+  color: #000000;
+  font-size: 24px;
+  letter-spacing: 0;
+  line-height: normal;
+  text-decoration: underline;
+}
+
+.desktop .text-wrapper-7 {
+  top: 165px;
+  left: 300px;
+  font-weight: 700;
+  font-size: 64px;
+  position: absolute;
+  font-family: "Zilla Slab", Helvetica;
+  color: #000000;
+  letter-spacing: 0;
+  line-height: normal;
+  text-decoration: underline;
+}
+
+.no-link-style {
+    color: inherit;          /* Use the parent element's color */
+    text-decoration: none;   /* Remove underline */
+    cursor: default;         /* Use default cursor, not a pointer hand */
+}
+
+.no-link-style:hover,
+.no-link-style:visited,
+.no-link-style:active {
+    color: inherit;
+    text-decoration: none;
+}

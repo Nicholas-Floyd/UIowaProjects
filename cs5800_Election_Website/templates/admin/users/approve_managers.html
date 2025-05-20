@@ -1,0 +1,48 @@
+{% extends "/admin/users/usersSidebar.html" %}
+{% set active_sidebar = "approve_managers" %}
+
+{% block main_content %}
+
+<div class="container my-5 px-4">
+  <h2>Approve Managers</h2>
+  {% if managers %}
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Manager ID</th>
+        <th scope="col">Name</th>
+        <th scope="col">Email</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for manager in managers %}
+      <tr>
+        <th scope="row">{{ loop.index }}</th>
+        <td>{{ manager.id }}</td>
+        <td>{{ manager.name }}</td>
+        <td>{{ manager.email }}</td>
+        <td>
+          <form action="{{ url_for('admin.users.approve_managers') }}" method="post" style="display:inline;">
+            <input type="hidden" name="manager_id" value="{{ manager.id }}">
+            <input type="hidden" name="action" value="approve">
+            <button type="submit" class="btn btn-primary">Approve</button>
+          </form>
+          <form action="{{ url_for('admin.users.approve_managers') }}" method="post" style="display:inline;">
+            <input type="hidden" name="manager_id" value="{{ manager.id }}">
+            <input type="hidden" name="action" value="reject">
+            <button type="submit" class="btn btn-danger">Reject</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+    <p>No managers pending approval.</p>
+  {% endif %}
+  {{ render_flashes(get_flashed_messages(with_categories=True)) }}
+</div>
+
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends "/admin/users/usersSidebar.html" %}
+{% set active_sidebar = "search" %}
+
+{% block main_content %}
+<div class="container my-5 px-4">
+  <h2>Search for voters</h2>
+  <form action="{{ url_for('admin.users.search') }}" method="GET" class="row g-3">
+    <div class="col-md-6">
+      <label for="voterId" class="form-label">Voter ID</label>
+      <input type="text" class="form-control" id="voterId" name="voter_id" placeholder="Enter voter ID"
+        value="{{ request.args.get('voter_id', '') }}">
+    </div>
+    <div class="col-md-6">
+      <label for="name" class="form-label">Name</label>
+      <input type="text" class="form-control" id="name" name="name" placeholder="Enter name"
+        value="{{ request.args.get('name', '') }}">
+    </div>
+    <div class="col-md-6">
+      <label for="precinct" class="form-label">Precinct ID</label>
+      <input type="text" class="form-control" id="precinctId" name="precinct" placeholder="Enter precinct id"
+        value="{{ request.args.get('precinct', '') }}">
+    </div>
+    <div class="col-md-6">
+      <label for="zipcode" class="form-label">Zipcode</label>
+      <input type="text" class="form-control" id="zipcode" name="zipcode" placeholder="Enter zipcode"
+        value="{{ request.args.get('zipcode', '') }}">
+    </div>
+    <div class="col-12">
+      <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+  </form>
+  <hr>
+  {% if voters %}
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Voter ID</th>
+        <th scope="col">Name</th>
+        <th scope="col">Precinct ID</th>
+        <th scope="col">Zipcode</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for voter in voters %}
+      <tr>
+        <th scope="row">{{ loop.index }}</th>
+        <td>{{ voter.id }}</td>
+        <td>{{ voter.name }}</td>
+        <td>{{ voter.precinct }}</td>
+        <td>{{ voter.zip_code }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p>No voters found matching your search criteria.</p>
+  {% endif %}
+</div>
+{% endblock %}

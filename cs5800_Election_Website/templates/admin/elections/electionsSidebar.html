@@ -1,0 +1,51 @@
+{% extends "admin/adminBase.html" %}
+{% set active_page = "elections" %}
+{% set active_sidebar = active_sidebar|default('') -%}
+
+{% block content %}
+<div class="d-flex flex-column flex-shrink-0 p-3 bg-light border-end" id="sidebar" style="width: 280px">
+  <a href="{{ url_for('admin.elections.home') }}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-decoration-none">
+    <span class="fs-4 link-dark">Manage Elections</span>
+  </a>
+  <hr>
+  <ul class="nav nav-pills flex-column mb-auto">
+    <li>
+      <a href="{{ url_for('admin.elections.home') }}"
+        class="nav-link link-dark {{ 'active' if active_sidebar == 'elections' else '' }}">
+        Elections
+      </a>
+    </li>
+    <li>
+      <a href="{{ url_for('admin.elections.races') }}"
+        class="nav-link link-dark {{ 'active' if active_sidebar == 'races' else '' }}">
+        Races
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="{{ url_for('admin.elections.precincts') }}"
+        class="nav-link link-dark {{ 'active' if active_sidebar == 'precincts' else '' }}" aria-current="page">
+        Precincts
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="{{ url_for('admin.elections.candidates') }}"
+        class="nav-link link-dark {{ 'active' if active_sidebar == 'candidates' else '' }}" aria-current="page">
+        Candidates
+      </a>
+    </li>
+  </ul>
+</div>
+<button id="toggleSidebar" style="width: 10px; border: none; padding: 0; color:grey;"
+  onclick=toggleSidebar()>||</button>
+
+<script>
+  function toggleSidebar() {
+    var sidebar = document.getElementById('sidebar');
+    sidebar.classList.toggle('d-none');
+  }
+</script>
+
+<!-- main content -->
+{% block main_content %}{% endblock %}
+
+{% endblock %}

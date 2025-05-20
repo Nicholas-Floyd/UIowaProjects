@@ -1,0 +1,54 @@
+{% extends "manager/base.html" %}
+{% set active_page = "profile" %}
+
+{% block content %}
+<div class="container mt-5" id="profile_container">
+    <h1>Manager Profile</h1>
+    <form class="mb-3" id="manager-profile-form" method="post" action="{{ url_for('manager.profile') }}">
+        <div class="form-group mb-3">
+            <label for="manager-name">Name</label>
+            <input type="text" class="form-control" id="manager-name" name="name" value="{{ manager.name }}" readonly>
+        </div>
+        <div class="form-group mb-3">
+            <label for="manager-email">Email</label>
+            <input type="email" class="form-control" id="manager-email" name="email" value="{{ manager.email }}" readonly>
+        </div>
+        <button type="button" class="btn btn-primary" id="edit-button">Edit Profile</button>
+        <button type="submit" class="btn btn-success d-none" id="save-button">Save Changes</button>
+        <button type="button" class="btn btn-secondary d-none" id="cancel-button">Cancel</button>
+    </form>
+    {{ render_flashes(get_flashed_messages(with_categories=True)) }}
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var editButton = document.getElementById('edit-button');
+        var saveButton = document.getElementById('save-button');
+        var cancelButton = document.getElementById('cancel-button');
+        var formFields = document.querySelectorAll('#manager-profile-form input');
+
+        editButton.addEventListener('click', function () {
+            // Make input fields editable
+            formFields.forEach(function (field) {
+                field.removeAttribute('readonly');
+            });
+            // Toggle visibility of buttons
+            editButton.classList.add('d-none');
+            saveButton.classList.remove('d-none');
+            cancelButton.classList.remove('d-none');
+        });
+
+        cancelButton.addEventListener('click', function () {
+            // Reload the page to discard changes
+            location.reload();
+        });
+    });
+</script>
+<style>
+    @media (min-width: 1200px) {
+        #profile_container {
+            max-width: 800px;
+        }
+    }
+</style>
+{% endblock %}
