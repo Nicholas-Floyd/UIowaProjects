@@ -22,7 +22,7 @@ A full-stack database project focused on MySQL schema design, stored procedures,
 
 ## CS:5800 – Election Website
 
-This was a capstone-style software engineering project built in a group using the AGILE process. It includes a full-stack web app for managing and conducting elections, built with Flask and PostgreSQL. We conducted weekly meetings with our client (Professor/TA) to simulate a real-world development cycle.
+This was a capstone-style software engineering project built in a group using the AGILE process. It includes a full-stack web app for managing and conducting elections, built with Flask and Sqlite. We conducted weekly meetings with our client (Professor/TA) to simulate a real-world development cycle.
 
 ---
 
