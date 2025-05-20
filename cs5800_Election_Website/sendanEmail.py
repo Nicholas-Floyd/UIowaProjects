@@ -4,7 +4,7 @@ from email.mime.multipart import MIMEMultipart
 
 # Email setup
 sender_email = "team8esp32devkitv@gmail.com"
-password = "lrfqscjgpmkwlnos"  # Use your app password here
+password = "expsswrd"  # Use your app password here
 
 def send_email(receiver_email, status):
     # Create the email
