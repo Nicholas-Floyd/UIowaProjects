@@ -1,22 +1,47 @@
-# University of Iowa projects -Nicholas Floyd
+# University of Iowa Projects – Nicholas Floyd
 
-## Overview 
-This repository has some of the projects I worked on over the course of my undergraduate career at Iowa for my Computer Science Engineering degree. This mostly only includes major projects and leaves out smaller things I worked on inbetween. Unfortuately some of my past projects have been lost or the account containing the submissions have been shutdown so this is a list of what I still have. In each folder there will be a README that goes more in depth on the project compared to what is written on this README.
+## Overview
 
-## CS:1210 Tweet Finder
-This project was one of the first projects I did in my career and involved using multiple API's to find the location of where a user tweeted something on google maps. 
+This repository showcases a selection of major projects I completed during my undergraduate studies in Computer Science and Engineering at the University of Iowa. While it doesn’t include every project I worked on—some were lost or submitted through systems that are no longer accessible—it represents the most impactful work I still have available.
 
-## CS:4400 Hospital Management
-This project for my database systems class and focused more on the use of stored procedures and making and editing tables using MySql. 
+Each folder contains a separate project with its own `README.md` that goes into greater detail about the implementation, goals, and lessons learned.
 
-## CS:5800 Election Website
-This project was for Fundamentals of Software Engineering where I worked in a group setting to heavily mimic a work enviornment for our project. This involved multiple meetings with our client (Professor and TA), and using an AGILE process while using everything we have learned for software development over the years.
+---
 
-## ECE:3360 Embedded Project
-This project was my final project for my embedded systems class. The goal was to make an ac system be able to automatically start and stop when reading certain temperatues aswell as having a RTC so users could set what time they want the system to shutoff or on. 
+## CS:1210 – Tweet Finder
 
-## ECE:4880 Portfolio Website
-This project was the last project from my first semester Senior Design class which involved creating a portfolio website my group. 
+One of my earliest projects, this application integrates multiple APIs (Google Maps & Twitter) to map tweets based on geolocation data. It features a Python GUI and dynamic map updates.
 
-## ENGR:1100 Laser Maze
-This project had the goal of making a STEM toy in which we made a laser maze.
+---
+
+## CS:4400 – Hospital Management
+
+A full-stack database project focused on MySQL schema design, stored procedures, and data normalization (3NF). Includes a Flask frontend with user authentication, patient-physician scheduling, and admin views.
+
+---
+
+## CS:5800 – Election Website
+
+This was a capstone-style software engineering project built in a group using the AGILE process. It includes a full-stack web app for managing and conducting elections, built with Flask and PostgreSQL. We conducted weekly meetings with our client (Professor/TA) to simulate a real-world development cycle.
+
+---
+
+## ECE:3360 – Embedded AC Control System
+
+An embedded systems project using an Arduino Uno, AHT20 temperature sensor, RTC module, and LCD. The system allows users to configure time-based auto-shutoff/on behavior and monitor temperature thresholds using both hardware and software controls.
+
+---
+
+## ECE:4880 – Portfolio Website
+
+A group project aimed at building a personal portfolio website for each team member. I handled all backend logic, including login functionality, password reset flows, and contact forms using Flask. The frontend used a template, though some CSS issues remain unresolved.
+
+---
+
+## ENGR:1100 – Laser Maze
+
+This was my first multi-week group project. The goal was to build a STEM toy, and we created a laser maze puzzle where users place mirrors to reflect a laser onto a target. Our project was voted best in class.
+
+---
+
+Feel free to explore each folder for a deeper look at the code and reports behind each project!
