@@ -18,7 +18,7 @@ This project was developed with support from Xyro Technologies, whose sponsorshi
 
 ## Demo Video
 
-A walkthrough and demonstration of the simulator is available here:
+A demonstration of the simulator is available here:
 
 [https://drive.google.com/file/d/1GeFOL4QYuKAY2I_g6zO8E8-ZchZD2lrz/view?usp=drive_link](https://drive.google.com/file/d/1GeFOL4QYuKAY2I_g6zO8E8-ZchZD2lrz/view?usp=drive_link)
 
