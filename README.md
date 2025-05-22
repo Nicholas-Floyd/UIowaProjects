@@ -7,7 +7,11 @@ This repository showcases a selection of major projects I completed during my un
 Each folder contains a separate project with its own `README.md` that goes into greater detail about the implementation, goals, and lessons learned.
 
 ---
+## Circuit Simulator
 
+With sponsorship from Xyro, me and my partner Alex Viner developed an XR Circuit Sim with the goal of making circuit education more fun and easy without any outside errors. We managed to make a working DC analysis simulator using ideal wires, resistors, batteries, inductors, capacitors, switches, and a red LED diode with a 1.7 turn on voltage. Working scripts for pooling, snapping, handling, managing, and more. NOT all scripts can be seen here. 
+
+---
 ## CS:1210 – Tweet Finder
 
 One of my earliest projects, this application integrates multiple APIs (Google Maps & Twitter) to map tweets based on geolocation data. It features a Python GUI and dynamic map updates.
